@@ -190,7 +190,7 @@ http://localhost:8000/docs
 
 
 
-## 8. Safety & Ethical Disclosure
+## 7. Safety & Ethical Disclosure
 
 RansomWatch is strictly an **educational defensive system**:
 - It **never** executes ransomware, encrypts user files, or executes destructive payloads.
