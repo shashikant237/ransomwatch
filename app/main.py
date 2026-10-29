@@ -394,8 +394,4 @@ def export_incidents(format: str = Query(default="json", pattern="^(json|csv)$")
 # Serve Static UI Frontend
 frontend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend")
 if os.path.exists(frontend_dir):
-    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-
-    @app.get("/", include_in_schema=False)
-    def serve_frontend_index():
-        return FileResponse(os.path.join(frontend_dir, "index.html"))
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
