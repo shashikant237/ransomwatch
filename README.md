@@ -188,62 +188,7 @@ http://localhost:8000/docs
 
 ---
 
-## 7. College Project Demonstration Script (Viva / Presentation)
 
-Follow this step-by-step workflow during your project demonstration:
-
-### Step 1: Overview & Academic Context
-1. Open the dashboard at `http://localhost:8000`.
-2. Point out the top academic header: **Manav Rachna University — Network Security and Cryptography**.
-3. Highlight the live operational metrics: **Total Events Analyzed**, **Active Heuristic Rules (14/14)**, **Isolation Forest Model Status (ONLINE)**, and the **Chart.js Threat Velocity Timeline**.
-
-### Step 2: Detection Lab (The Flagship Feature)
-1. Click the **Detection Lab** tab on the left sidebar.
-2. Click the **"Normal Office Editing"** quick scenario button:
-   - Notice the low risk score ($<15/100$), green badge, and dynamic explanation confirming that file modification rates and entropy remain within normal baseline parameters.
-3. Click the **"Mass File Renaming"** scenario:
-   - Notice the risk jumps to HIGH ($70+/100$), and the dynamic explanation specifically identifies the rename burst.
-4. Click the **"Ransom Note Creation"** scenario:
-   - Point out the detection of extortion instruction files and the tailored recommendation to preserve note artifacts for decryptor intelligence.
-5. Click the **"Combined Ransomware Attack"** scenario:
-   - Observe a **CRITICAL** risk score ($90+/100$).
-   - Show how the **Top Contributing Indicators** list breaks down Shannon entropy (+3.85 bits/byte), backup tampering (2 attempts), and ransomware extension changes (35 files).
-   - Point out the **Isolation Forest Analysis** box confirming the sample as an unsupervised statistical outlier.
-
-### Step 3: Interactive Parameter Tuning
-1. Adjust the **Shannon Entropy Delta** slider from `0.15` to `3.5 bits/byte`.
-2. Toggle the **Backup Tampering** slider to `1 attempt`.
-3. Click **"Run Multi-Parameter Threat Analysis"**.
-4. Observe the live recalculation and note that the dynamically generated explanation adapts in real time.
-
-### Step 4: Live Shannon Entropy Tool
-1. Scroll to the **Safe Shannon Entropy Measurement Tool** at the bottom of the Detection Lab.
-2. Click **"Load Plaintext"** and click **Calculate Entropy** ($\approx 3.8$ bits/byte).
-3. Click **"Load Encrypted Cipher Sample"** and click **Calculate Entropy** ($\approx 7.8$ bits/byte).
-4. Explain how high entropy confirms cryptographic data transformation.
-
-### Step 5: Alerts & SQLite Persistence
-1. Navigate to the **Alerts & Incidents** tab.
-2. Filter by `Risk Level = CRITICAL` to display stored high-severity detections.
-3. Click **"Forensics"** on any row to open the forensic triage modal showing triggered heuristics and snapshots.
-4. Demonstrate data portability by clicking **"Export CSV"** and **"Export JSON"**.
-
-### Step 6: Configurable Rules & Dynamic Scoring
-1. Navigate to the **Detection Rules** tab.
-2. Show that heuristic thresholds and engine weight ratios (Rule Ratio vs. ML Ratio) can be adjusted dynamically without restarting the server.
-
-### Step 7: Model Insights & Academic Integrity
-1. Navigate to the **Model Insights** tab.
-2. Highlight the **Academic Disclosure & Scope Limitation** banner: explain that Isolation Forest detects behavioral anomalies rather than specific malware signatures, and that synthetic benchmarks demonstrate mathematical functionality rather than absolute evasion resistance.
-3. Show the held-out benchmark evaluation metrics (Precision: 1.0, Recall: 1.0, F1: 1.0 on synthetic test set).
-
-### Step 8: Safe Defensive Response Playbook
-1. Navigate to the **Response Centre** tab.
-2. Select a critical incident from the dropdown.
-3. Click **"Simulate Endpoint Isolation"** and **"Simulate Process Termination"**.
-4. Highlight the bold, visible notice: **`SIMULATED — NO REAL ENDPOINT ISOLATED`**, explaining that the defensive prototype follows ethical safety guidelines by recording actions in the audit trail without executing destructive host commands.
-
----
 
 ## 8. Safety & Ethical Disclosure
 
