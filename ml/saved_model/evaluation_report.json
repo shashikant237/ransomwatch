@@ -1,0 +1,18 @@
+{
+  "evaluation_timestamp": "2026-10-29T20:34:11.363462",
+  "test_dataset_size": 1250,
+  "benign_test_samples": 1000,
+  "ransomware_test_samples": 250,
+  "metrics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "false_positive_rate": 0.0,
+    "true_positives": 250,
+    "false_positives": 0,
+    "true_negatives": 1000,
+    "false_negatives": 0
+  },
+  "evaluation_protocol": "Held-out synthetic test set with separate random seed (999). Evaluated unsupervised Isolation Forest decision threshold (-1 -> 1, 1 -> 0).",
+  "scientific_limitations": "CRITICAL NOTE: These metrics reflect performance strictly against synthetic behavioral distributions designed to model ransomware properties. Real-world malware environments feature diverse legitimate enterprise workloads, evasion techniques (slow encryption, process injection), and legitimate high-throughput programs that would induce different false positive and false negative dynamics."
+}

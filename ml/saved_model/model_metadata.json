@@ -1,0 +1,35 @@
+{
+  "model_name": "IsolationForest-BehavioralDetector",
+  "model_version": "1.0.0",
+  "algorithm": "IsolationForest",
+  "random_seed": 42,
+  "training_timestamp": "2026-10-29T15:04:02.394941+00:00",
+  "total_training_samples": 2950,
+  "benign_samples": 2500,
+  "anomalous_samples": 450,
+  "contamination": 0.1525,
+  "features": [
+    "file_modification_rate",
+    "file_rename_frequency",
+    "file_deletion_frequency",
+    "unique_directories_accessed",
+    "unique_files_affected",
+    "suspicious_extension_changes",
+    "file_ops_per_process",
+    "unique_files_per_process",
+    "rapid_sequential_modifications",
+    "file_entropy_delta",
+    "unusual_write_burst_frequency",
+    "ransom_note_indicators",
+    "unusual_type_conversions",
+    "process_activity_deviation",
+    "backup_tamper_attempts"
+  ],
+  "calibration": {
+    "benign_decision_min": 0.0103735626987137,
+    "benign_decision_max": 0.17692227006361094,
+    "benign_decision_mean": 0.134630487989811,
+    "benign_decision_std": 0.0260676389453586
+  },
+  "disclaimer": "Isolation Forest is an unsupervised anomaly detection algorithm. It flags statistical outliers in feature space based on path length in isolation trees. Trained on synthetic behavioral vectors for defensive demonstration. Does not constitute an authenticated real-world malware classifier."
+}

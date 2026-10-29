@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RansomWatch — Behaviour-Based Ransomware Detection with Explainable AI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <!-- Chart.js for responsive cyber telemetry charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-shield">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">RANSOM<span>WATCH</span></div>
+        <div class="brand-sub">Behaviour-Based Ransomware Detection &bull; Explainable AI</div>
+      </div>
+    </div>
+
+    <div class="academic-badge">
+      <span class="uni-name">Manav Rachna University</span>
+      <span class="subject-tag">Network Security &amp; Cryptography</span>
+    </div>
+
+    <div class="header-status">
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span id="engine-status">SYSTEM ONLINE</span>
+      </div>
+      <div class="model-pill" id="header-model-pill">
+        <span class="badge-icon">🧠</span> Isolation Forest v1.0.0
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="tab-overview">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </button>
+        <button class="nav-item" data-tab="tab-lab">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 2v7.31L4.69 17.5a2 2 0 0 0 1.62 3.5h15.38a2 2 0 0 0 1.62-3.5L18 9.31V2"/><line x1="8" y1="2" x2="16" y2="2"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+          Detection Lab
+          <span class="badge-highlight">Flagship</span>
+        </button>
+        <button class="nav-item" data-tab="tab-live">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Live Activity
+        </button>
+        <button class="nav-item" data-tab="tab-alerts">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Alerts &amp; Incidents
+          <span class="badge-count" id="nav-alert-count">0</span>
+        </button>
+        <button class="nav-item" data-tab="tab-rules">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Detection Rules
+        </button>
+        <button class="nav-item" data-tab="tab-model">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Model Insights
+        </button>
+        <button class="nav-item" data-tab="tab-response">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Response Centre
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="safety-tag">
+          <span class="safety-shield">🛡️</span>
+          <div>
+            <strong>Safe Defensive Environment</strong>
+            <small>In-memory telemetry only. No files modified.</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Panels -->
+    <main class="content-area">
+      <!-- Banner Message -->
+      <div id="status-toast" class="toast hidden"></div>
+
+      <!-- ============================================== -->
+      <!-- SECTION A: OVERVIEW -->
+      <!-- ============================================== -->
+      <section id="tab-overview" class="tab-pane active">
+        <div class="section-header">
+          <div>
+            <h2>Security Operations Overview</h2>
+            <p class="subtitle">Aggregate telemetry, threat velocity, and machine learning anomaly metrics.</p>
+          </div>
+          <button class="btn btn-outline" id="refresh-overview-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh
+          </button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Total Events Analyzed</div>
+            <div class="metric-value" id="card-total-events">-</div>
+            <div class="metric-sub">Full multi-feature evaluations</div>
+          </div>
+          <div class="metric-card normal-card">
+            <div class="metric-label">Normal Baselines</div>
+            <div class="metric-value text-success" id="card-normal-events">-</div>
+            <div class="metric-sub">Compliant endpoint activity</div>
+          </div>
+          <div class="metric-card warning-card">
+            <div class="metric-label">Suspicious Events</div>
+            <div class="metric-value text-warning" id="card-suspicious-events">-</div>
+            <div class="metric-sub">Elevated heuristic markers</div>
+          </div>
+          <div class="metric-card danger-card">
+            <div class="metric-label">High &amp; Critical Incidents</div>
+            <div class="metric-value text-danger" id="card-high-incidents">-</div>
+            <div class="metric-sub">Multi-vector ransomware alerts</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Average Risk Score</div>
+            <div class="metric-value text-cyan" id="card-avg-score">-</div>
+            <div class="metric-sub">Calibrated scale (0 - 100)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Active Heuristic Rules</div>
+            <div class="metric-value" id="card-active-rules">14 / 14</div>
+            <div class="metric-sub">Real-time inspection engine</div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Incident Threat Velocity Timeline</h3>
+              <span class="chart-tag">Sequential Events</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="timelineChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Threat Level Distribution</h3>
+              <span class="chart-tag">Categorical Risk</span>
+            </div>
+            <div class="chart-canvas-wrap doughnut-wrap">
+              <canvas id="riskDistChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Incident Quick Table -->
+        <div class="panel-box">
+          <div class="panel-box-header">
+            <h3>Recent High-Priority Detections</h3>
+            <button class="btn btn-sm btn-link" data-goto="tab-alerts">View All Alerts &rarr;</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="overview-recent-table">
+              <thead>
+                <tr>
+                  <th>Incident ID</th>
+                  <th>Timestamp</th>
+                  <th>Process</th>
+                  <th>Target Scope</th>
+                  <th>Risk Level</th>
+                  <th>Risk Score</th>
+                  <th>Top Indicator</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="overview-recent-tbody">
+                <tr><td colspan="8" class="text-center text-muted">Loading telemetry...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION C: DETECTION LAB (FLAGSHIP) -->
+      <!-- ============================================== -->
+      <section id="tab-lab" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Behavioral Detection Laboratory</h2>
+            <p class="subtitle">Safely generate multi-parameter telemetry vectors to test the Rule Engine and Isolation Forest model.</p>
+          </div>
+          <div class="lab-safety-banner">
+            <span class="badge-icon">🛡️</span> SAFE ENVIRONMENT: Evaluates synthetic feature vectors. No actual files are encrypted or altered.
+          </div>
+        </div>
+
+        <!-- Preset Scenario Buttons -->
+        <div class="scenarios-bar">
+          <span class="scenarios-title">Quick Scenarios:</span>
+          <button class="scenario-btn btn-scenario-normal" data-scenario="normal_office">
+            <span class="sc-icon">🟢</span> Normal Office Editing
+          </button>
+          <button class="scenario-btn btn-scenario-warn" data-scenario="rapid_file_mods">
+            <span class="sc-icon">⚡</span> Rapid File Modifications
+          </button>
+          <button class="scenario-btn btn-scenario-warn" data-scenario="mass_rename">
+            <span class="sc-icon">🔄</span> Mass File Renaming
+          </button>
+          <button class="scenario-btn btn-scenario-warn" data-scenario="mass_deletion">
+            <span class="sc-icon">🗑️</span> Mass File Deletions
+          </button>
+          <button class="scenario-btn btn-scenario-danger" data-scenario="ransom_note">
+            <span class="sc-icon">📝</span> Ransom Note Creation
+          </button>
+          <button class="scenario-btn btn-scenario-danger" data-scenario="high_entropy">
+            <span class="sc-icon">🔐</span> High Entropy / Encryption
+          </button>
+          <button class="scenario-btn btn-scenario-crit" data-scenario="combined_attack">
+            <span class="sc-icon">🚨</span> Combined Ransomware Attack
+          </button>
+        </div>
+
+        <!-- Lab Dual Layout: Left Controls, Right Explainable Assessment -->
+        <div class="lab-layout">
+          <!-- Parameter Tuner Card -->
+          <div class="card lab-tuner-card">
+            <div class="card-header">
+              <h3>15 Behavioral Parameters</h3>
+              <button class="btn btn-sm btn-ghost" id="lab-reset-params-btn">Reset Defaults</button>
+            </div>
+            <div class="card-body">
+              <form id="lab-feature-form">
+                <div class="process-meta-grid">
+                  <div class="form-group">
+                    <label>Process Name</label>
+                    <input type="text" id="param-process_name" class="form-input" value="WINWORD.EXE" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Process ID (PID)</label>
+                    <input type="number" id="param-process_id" class="form-input" value="4120" required>
+                  </div>
+                  <div class="form-group">
+                    <label>User Account</label>
+                    <input type="text" id="param-user_account" class="form-input" value="CORP\jsmith" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Target File / Directory</label>
+                    <input type="text" id="param-target_path" class="form-input" value="C:\Users\jsmith\Documents\Report.docx" required>
+                  </div>
+                </div>
+
+                <div class="parameters-grid">
+                  <!-- 1. Modification Rate -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-file_modification_rate">1. Modification Rate</label>
+                      <span class="param-badge" id="val-file_modification_rate">0.8 files/s</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-file_modification_rate" min="0" max="60" step="0.5" value="0.8">
+                    <small class="param-hint">Rate of file changes per sec (Threshold: &gt;12.0)</small>
+                  </div>
+
+                  <!-- 2. Rename Frequency -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-file_rename_frequency">2. Rename Frequency</label>
+                      <span class="param-badge" id="val-file_rename_frequency">0.0 /min</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-file_rename_frequency" min="0" max="50" step="0.5" value="0.0">
+                    <small class="param-hint">File renaming pace (Threshold: &gt;10.0)</small>
+                  </div>
+
+                  <!-- 3. Deletion Frequency -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-file_deletion_frequency">3. Deletion Frequency</label>
+                      <span class="param-badge" id="val-file_deletion_frequency">0.0 /min</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-file_deletion_frequency" min="0" max="40" step="0.5" value="0.0">
+                    <small class="param-hint">Unlinking of original files (Threshold: &gt;8.0)</small>
+                  </div>
+
+                  <!-- 4. Unique Directories -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-unique_directories_accessed">4. Unique Directories</label>
+                      <span class="param-badge" id="val-unique_directories_accessed">1 dirs</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-unique_directories_accessed" min="1" max="25" step="1" value="1">
+                    <small class="param-hint">Breadth of directory traversal (Threshold: &gt;6)</small>
+                  </div>
+
+                  <!-- 5. Unique Files Affected -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-unique_files_affected">5. Unique Files Affected</label>
+                      <span class="param-badge" id="val-unique_files_affected">2 files</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-unique_files_affected" min="1" max="200" step="1" value="2">
+                    <small class="param-hint">Total touched file count (Threshold: &gt;40)</small>
+                  </div>
+
+                  <!-- 6. Suspicious Extensions -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-suspicious_extension_changes">6. Suspicious Ext. Changes</label>
+                      <span class="param-badge" id="val-suspicious_extension_changes">0</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-suspicious_extension_changes" min="0" max="30" step="1" value="0">
+                    <small class="param-hint">Appended ransomware tags (.locked, .wnry) (Threshold: &gt;=1)</small>
+                  </div>
+
+                  <!-- 7. File Ops Per Process -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-file_ops_per_process">7. File Ops Per Process</label>
+                      <span class="param-badge" id="val-file_ops_per_process">12 ops</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-file_ops_per_process" min="1" max="300" step="1" value="12">
+                    <small class="param-hint">I/O handles per process (Threshold: &gt;90)</small>
+                  </div>
+
+                  <!-- 8. Unique Files Per Process -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-unique_files_per_process">8. Unique Files Per Proc</label>
+                      <span class="param-badge" id="val-unique_files_per_process">2 files</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-unique_files_per_process" min="1" max="150" step="1" value="2">
+                    <small class="param-hint">Target files opened by PID (Threshold: &gt;35)</small>
+                  </div>
+
+                  <!-- 9. Rapid Sequential Writes -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-rapid_sequential_modifications">9. Sub-50ms Writes</label>
+                      <span class="param-badge" id="val-rapid_sequential_modifications">0 bursts</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-rapid_sequential_modifications" min="0" max="40" step="1" value="0">
+                    <small class="param-hint">Automated microsecond write loops (Threshold: &gt;5)</small>
+                  </div>
+
+                  <!-- 10. File Entropy Delta -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-file_entropy_delta">10. Entropy Delta (Δ bits)</label>
+                      <span class="param-badge" id="val-file_entropy_delta">+0.15 bits</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-file_entropy_delta" min="0.0" max="4.0" step="0.05" value="0.15">
+                    <small class="param-hint">Shannon entropy shift: ciphertext conversion (Threshold: &gt;=2.2)</small>
+                  </div>
+
+                  <!-- 11. Write Burst Frequency -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-unusual_write_burst_frequency">11. Write Burst Frequency</label>
+                      <span class="param-badge" id="val-unusual_write_burst_frequency">0.2 /min</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-unusual_write_burst_frequency" min="0" max="15" step="0.2" value="0.2">
+                    <small class="param-hint">Episodic burst writes per minute (Threshold: &gt;4.0)</small>
+                  </div>
+
+                  <!-- 12. Ransom Note Indicators -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-ransom_note_indicators">12. Ransom Note Files</label>
+                      <span class="param-badge" id="val-ransom_note_indicators">0</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-ransom_note_indicators" min="0" max="10" step="1" value="0">
+                    <small class="param-hint">Detected extortion instructions (Threshold: &gt;=1)</small>
+                  </div>
+
+                  <!-- 13. Unusual Type Conversions -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-unusual_type_conversions">13. Type Conversions</label>
+                      <span class="param-badge" id="val-unusual_type_conversions">0</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-unusual_type_conversions" min="0" max="15" step="1" value="0">
+                    <small class="param-hint">Document header-to-blob shifts (Threshold: &gt;=2)</small>
+                  </div>
+
+                  <!-- 14. Process Activity Deviation -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-process_activity_deviation">14. Baseline Deviation</label>
+                      <span class="param-badge" id="val-process_activity_deviation">0.4 σ</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-process_activity_deviation" min="0" max="8" step="0.1" value="0.4">
+                    <small class="param-hint">Standard deviations from benign baseline (Threshold: &gt;3.0)</small>
+                  </div>
+
+                  <!-- 15. Backup Tamper Attempts -->
+                  <div class="param-box">
+                    <div class="param-title-row">
+                      <label for="param-backup_tamper_attempts">15. Backup Tampering</label>
+                      <span class="param-badge" id="val-backup_tamper_attempts">0 attempts</span>
+                    </div>
+                    <input type="range" class="form-range" id="param-backup_tamper_attempts" min="0" max="3" step="1" value="0">
+                    <small class="param-hint">Probing shadow copies / VSS catalogs (Threshold: &gt;=1)</small>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary btn-block" id="lab-analyze-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Run Multi-Parameter Threat Analysis
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Explainable Detection Results Card -->
+          <div class="card lab-result-card" id="lab-result-card">
+            <div class="card-header">
+              <h3>Explainable AI Threat Assessment</h3>
+              <span class="badge-status" id="lab-incident-id">RUN TELEMETRY ANALYSIS</span>
+            </div>
+            <div class="card-body">
+              <!-- Risk Score Hero Banner -->
+              <div class="risk-hero" id="lab-risk-hero">
+                <div class="risk-gauge-wrap">
+                  <div class="risk-score-circle" id="lab-risk-circle">
+                    <span class="risk-score-number" id="lab-risk-score">0</span>
+                    <span class="risk-score-scale">/100</span>
+                  </div>
+                </div>
+                <div class="risk-meta">
+                  <div class="risk-level-badge level-low" id="lab-risk-level">LOW RISK</div>
+                  <div class="score-breakdown-row">
+                    <div class="score-chip">
+                      <span class="chip-label">Rule Engine Score:</span>
+                      <strong id="lab-rule-score">0.0 / 100</strong>
+                    </div>
+                    <div class="score-chip">
+                      <span class="chip-label">ML Anomaly Score:</span>
+                      <strong id="lab-ml-score">0.0 / 100</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dynamic Non-Hardcoded Explanation Box -->
+              <div class="explanation-box">
+                <div class="explanation-title">
+                  <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  Dynamic Behavioral Threat Explanation
+                </div>
+                <p class="explanation-text" id="lab-dynamic-explanation">
+                  Select a simulation scenario or adjust the 15 parameters on the left to observe explainable AI detection logic.
+                </p>
+              </div>
+
+              <!-- Recommended Next Action Box -->
+              <div class="recommendation-box">
+                <div class="recommendation-title">
+                  <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  Recommended Defensive Response
+                </div>
+                <p class="recommendation-text" id="lab-recommended-action">
+                  Standing by for telemetry input.
+                </p>
+              </div>
+
+              <!-- Top Contributing Indicators Bar Breakdown -->
+              <div class="contributors-box">
+                <div class="contributors-title">Top Contributing Behavioral Indicators</div>
+                <div class="contributors-list" id="lab-contributors-list">
+                  <div class="empty-state">No anomalous contributors detected.</div>
+                </div>
+              </div>
+
+              <!-- Machine Learning Anomaly Interpretation Details -->
+              <div class="ml-insight-box">
+                <div class="ml-box-header">
+                  <strong>Unsupervised Isolation Forest Analysis</strong>
+                  <span class="ml-status-tag" id="lab-ml-classification">INLIER</span>
+                </div>
+                <div class="ml-box-body">
+                  <p id="lab-ml-interpretation">Isolation forest model ready.</p>
+                  <small class="text-muted" id="lab-ml-synthetic-notice"></small>
+                </div>
+              </div>
+
+              <!-- Safe Simulation Quick Actions -->
+              <div class="lab-actions-row">
+                <button class="btn btn-warning btn-sm" id="lab-ack-btn" disabled>
+                  Acknowledge Incident
+                </button>
+                <button class="btn btn-danger btn-sm" id="lab-sim-contain-btn" disabled>
+                  Simulate Safe Containment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Shannon Entropy Sandbox -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>Safe Shannon Entropy Measurement Tool</h3>
+            <span class="badge-pill">Cryptographic Indicator Verification</span>
+          </div>
+          <div class="entropy-tool-grid">
+            <div>
+              <p class="text-muted">Test real Shannon entropy (0.0 to 8.0 bits/byte) on plain text vs encrypted/random data strings.</p>
+              <textarea id="entropy-sample-input" class="form-textarea" rows="3" placeholder="Paste sample data or plaintext here to calculate entropy..."></textarea>
+              <div class="btn-group-sm mt-2">
+                <button class="btn btn-sm btn-outline" id="entropy-load-plain-btn">Load Plaintext</button>
+                <button class="btn btn-sm btn-outline" id="entropy-load-cipher-btn">Load Encrypted Cipher Sample</button>
+                <button class="btn btn-sm btn-primary" id="entropy-calc-btn">Calculate Entropy</button>
+              </div>
+            </div>
+            <div class="entropy-output-box">
+              <div class="entropy-score-row">
+                <div>
+                  <div class="metric-label">Calculated Entropy</div>
+                  <div class="entropy-value text-cyan" id="entropy-result-val">-</div>
+                </div>
+                <div class="entropy-interp-badge" id="entropy-result-badge">Standby</div>
+              </div>
+              <p class="text-muted mt-2" id="entropy-result-desc">
+                High entropy (~7.5 to 8.0 bits/byte) indicates ciphertext or compressed streams typical of active encryptors.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION B: LIVE ACTIVITY -->
+      <!-- ============================================== -->
+      <section id="tab-live" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Live Behavioral Telemetry Stream</h2>
+            <p class="subtitle">Real-time incoming process events and behavioral anomaly classifications.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline" id="refresh-live-btn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Refresh Feed
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-box">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Event ID</th>
+                  <th>Process Name (PID)</th>
+                  <th>User</th>
+                  <th>Target Scope</th>
+                  <th>Risk Level</th>
+                  <th>Risk Score</th>
+                  <th>ML Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="live-events-tbody">
+                <tr><td colspan="9" class="text-center text-muted">No telemetry events recorded yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION D: ALERTS & INCIDENTS -->
+      <!-- ============================================== -->
+      <section id="tab-alerts" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Alerts &amp; Incident Records</h2>
+            <p class="subtitle">Persisted forensic logs stored in SQLite database with full investigative telemetry.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline" id="export-json-btn">Export JSON</button>
+            <button class="btn btn-outline" id="export-csv-btn">Export CSV</button>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Filter by Risk:</label>
+            <select id="filter-risk" class="form-select">
+              <option value="ALL">All Risk Levels</option>
+              <option value="CRITICAL">Critical Only</option>
+              <option value="HIGH">High Only</option>
+              <option value="MEDIUM">Medium Only</option>
+              <option value="LOW">Low Only</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Status:</label>
+            <select id="filter-status" class="form-select">
+              <option value="ALL">All Statuses</option>
+              <option value="NEW">New</option>
+              <option value="ACKNOWLEDGED">Acknowledged</option>
+              <option value="CONTAINED_SIMULATED">Simulated Containment</option>
+            </select>
+          </div>
+          <div class="filter-group search-group">
+            <label>Search:</label>
+            <input type="text" id="filter-search" class="form-input" placeholder="Search by process, ID, or path...">
+          </div>
+          <button class="btn btn-primary" id="apply-filter-btn">Apply Filter</button>
+        </div>
+
+        <!-- Incidents Table -->
+        <div class="panel-box">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Incident ID</th>
+                  <th>Timestamp</th>
+                  <th>Process Name (PID)</th>
+                  <th>Risk Level</th>
+                  <th>Risk Score</th>
+                  <th>Rule Score</th>
+                  <th>ML Score</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="alerts-table-tbody">
+                <tr><td colspan="9" class="text-center text-muted">Loading incidents from SQLite database...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION E: DETECTION RULES -->
+      <!-- ============================================== -->
+      <section id="tab-rules" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Configurable Detection Rules &amp; Thresholds</h2>
+            <p class="subtitle">Customize behavioral heuristic thresholds and adjust composite weighting ratios in real time.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="save-rules-btn">Save &amp; Apply Thresholds</button>
+          </div>
+        </div>
+
+        <!-- Engine Weighting Ratios Card -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3>Composite Engine Weighting Configuration</h3>
+            <span class="badge-pill">Dynamic Scoring Formula</span>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">
+              Adjust how the overall threat score is calculated:
+              <code>Risk Score = (Rule Score × Rule Ratio) + (Calibrated ML Anomaly Score × ML Ratio)</code>
+            </p>
+            <div class="weight-controls-grid">
+              <div class="weight-box">
+                <label>Rule Engine Weight Ratio: <strong id="val-rule-ratio">60%</strong></label>
+                <input type="range" class="form-range" id="input-rule-ratio" min="10" max="90" step="5" value="60">
+              </div>
+              <div class="weight-box">
+                <label>ML Isolation Forest Ratio: <strong id="val-ml-ratio">40%</strong></label>
+                <input type="range" class="form-range" id="input-ml-ratio" min="10" max="90" step="5" value="40">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rules Table -->
+        <div class="panel-box">
+          <div class="table-responsive">
+            <table class="data-table" id="rules-config-table">
+              <thead>
+                <tr>
+                  <th>Rule ID</th>
+                  <th>Rule Name</th>
+                  <th>Feature Parameter</th>
+                  <th>Threshold Value</th>
+                  <th>Weight Impact</th>
+                  <th>Status</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody id="rules-config-tbody">
+                <tr><td colspan="7" class="text-center text-muted">Loading configurable rules...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION F: MODEL INSIGHTS -->
+      <!-- ============================================== -->
+      <section id="tab-model" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Machine Learning Anomaly Detection Insights</h2>
+            <p class="subtitle">Architecture, reproducible training pipeline, and validation metrics for the Isolation Forest detector.</p>
+          </div>
+        </div>
+
+        <!-- Academic Disclosure Banner -->
+        <div class="scientific-notice-card">
+          <div class="notice-icon">⚠️</div>
+          <div>
+            <h4>Academic Disclosure &amp; Scope Limitation</h4>
+            <p>
+              The Isolation Forest model is an <strong>unsupervised anomaly detector</strong> trained on synthetic behavioral feature vectors
+              modeling both benign baseline tasks and ransomware burst signatures. It identifies multi-dimensional spatial outliers
+              rather than deterministic malware signatures. High performance on synthetic test benchmarks demonstrates algorithmic functionality,
+              not universal immunity against novel evasion techniques or unmodeled legitimate enterprise workflows.
+            </p>
+          </div>
+        </div>
+
+        <!-- Model Metadata Grid -->
+        <div class="metrics-grid mt-4">
+          <div class="metric-card">
+            <div class="metric-label">Algorithm</div>
+            <div class="metric-value text-cyan" style="font-size: 1.25rem;">Isolation Forest</div>
+            <div class="metric-sub">scikit-learn ensemble</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Ensemble Trees</div>
+            <div class="metric-value" id="model-trees">150</div>
+            <div class="metric-sub">n_estimators parameter</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Reproducibility Seed</div>
+            <div class="metric-value text-warning">42</div>
+            <div class="metric-sub">Fixed pseudo-random seed</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Training Samples</div>
+            <div class="metric-value" id="model-samples">2,950</div>
+            <div class="metric-sub">2,500 benign / 450 anomalous</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Contamination Ratio</div>
+            <div class="metric-value" id="model-contamination">0.153</div>
+            <div class="metric-sub">Expected outlier proportion</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Features Evaluated</div>
+            <div class="metric-value">15</div>
+            <div class="metric-sub">Continuous &amp; count vectors</div>
+          </div>
+        </div>
+
+        <!-- Evaluation Benchmark Results Card -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>Independent Held-Out Evaluation Benchmark</h3>
+            <span class="badge-pill">Seed: 999 (1,250 Test Samples)</span>
+          </div>
+          <div class="eval-metrics-grid" id="eval-metrics-container">
+            <div class="eval-box">
+              <span class="eval-lbl">Precision:</span>
+              <strong class="eval-val text-success" id="eval-precision">1.0000</strong>
+            </div>
+            <div class="eval-box">
+              <span class="eval-lbl">Recall:</span>
+              <strong class="eval-val text-success" id="eval-recall">1.0000</strong>
+            </div>
+            <div class="eval-box">
+              <span class="eval-lbl">F1-Score:</span>
+              <strong class="eval-val text-success" id="eval-f1">1.0000</strong>
+            </div>
+            <div class="eval-box">
+              <span class="eval-lbl">False Positive Rate (FPR):</span>
+              <strong class="eval-val text-cyan" id="eval-fpr">0.0000</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature List and Descriptions -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>Evaluated Feature Space (15 Behavioral Parameters)</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Feature Key</th>
+                  <th>Display Name</th>
+                  <th>Benign Baseline</th>
+                  <th>Suspicious Range</th>
+                  <th>Defensive Significance</th>
+                </tr>
+              </thead>
+              <tbody id="model-features-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION G: RESPONSE CENTRE -->
+      <!-- ============================================== -->
+      <section id="tab-response" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Defensive Incident Response Centre</h2>
+            <p class="subtitle">Safe simulation workflows, containment playbooks, and backup integrity verification procedures.</p>
+          </div>
+        </div>
+
+        <!-- Visible Safety Notice -->
+        <div class="simulated-containment-banner">
+          <span class="sim-pill">SIMULATED ENVIRONMENT</span>
+          <span>NO REAL ENDPOINT ISOLATED &bull; NO PHYSICAL PROCESS TERMINATED &bull; NO REAL FILES RESTORED</span>
+        </div>
+
+        <div class="response-grid">
+          <!-- Active Incident Selector Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Incident Triage &amp; Containment Trigger</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Select Incident to Contain:</label>
+                <select id="response-incident-select" class="form-select">
+                  <option value="">-- Choose an Incident --</option>
+                </select>
+              </div>
+
+              <div id="response-incident-details" class="incident-preview-box hidden">
+                <div class="preview-row">
+                  <span class="text-muted">Target Process:</span>
+                  <strong id="resp-proc-name">-</strong>
+                </div>
+                <div class="preview-row">
+                  <span class="text-muted">Risk Assessment:</span>
+                  <span id="resp-risk-badge" class="badge-status">-</span>
+                </div>
+                <div class="preview-row">
+                  <span class="text-muted">Path:</span>
+                  <code id="resp-path">-</code>
+                </div>
+                <div class="preview-row">
+                  <span class="text-muted">Dynamic Recommendation:</span>
+                  <p id="resp-recommendation" class="text-muted mt-1">-</p>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label>Analyst Notes:</label>
+                <textarea id="resp-notes" class="form-textarea" rows="2" placeholder="Record incident containment notes..."></textarea>
+              </div>
+
+              <div class="action-buttons-stack mt-3">
+                <button class="btn btn-warning btn-block" id="resp-btn-ack">
+                  Acknowledge Incident
+                </button>
+                <button class="btn btn-danger btn-block" id="resp-btn-terminate">
+                  Simulate Process Termination
+                </button>
+                <button class="btn btn-danger btn-block" id="resp-btn-isolate">
+                  Simulate Endpoint Isolation
+                </button>
+                <button class="btn btn-cyan btn-block" id="resp-btn-restore">
+                  Simulate Volume Shadow Copy Rollback Check
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Playbook & Recovery Checklist -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Ransomware Incident Response Playbook</h3>
+              <span class="badge-pill">NIST SP 800-61 Rev 2</span>
+            </div>
+            <div class="card-body">
+              <div class="checklist-group">
+                <h4>1. Triage &amp; Identification</h4>
+                <label class="checkbox-item">
+                  <input type="checkbox" checked disabled>
+                  <span>Multi-parameter behavioral analysis executed</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" checked disabled>
+                  <span>Isolation Forest anomaly score verified</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Preserve memory triage dump (.dmp) for decryptor key extraction</span>
+                </label>
+              </div>
+
+              <div class="checklist-group mt-3">
+                <h4>2. Safe Containment &amp; Eradication</h4>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Simulate network isolation on affected VLAN / segment</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Audit Active Directory accounts associated with execution</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Verify Volume Shadow Copies (VSS) status via safe diagnostic</span>
+                </label>
+              </div>
+
+              <div class="checklist-group mt-3">
+                <h4>3. Post-Incident Recovery</h4>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Validate immutable offline backup integrity hash</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox">
+                  <span>Verify absence of persistence mechanisms (Scheduled Tasks, Registry Run Keys)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Response Audit Log -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>Simulated Incident Action Audit Trail</h3>
+            <span class="badge-pill">Chain of Custody</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Action ID</th>
+                  <th>Incident Ref</th>
+                  <th>Action Taken</th>
+                  <th>Analyst</th>
+                  <th>Notes</th>
+                  <th>Simulation Banner</th>
+                </tr>
+              </thead>
+              <tbody id="response-audit-tbody">
+                <tr><td colspan="7" class="text-center text-muted">No simulated response actions recorded yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Incident Detail Forensic Modal -->
+  <div id="incident-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-title">Forensic Incident Detail</h3>
+          <span class="text-muted" id="modal-subtitle"></span>
+        </div>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-dismiss-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
