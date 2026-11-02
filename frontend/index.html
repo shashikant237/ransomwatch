@@ -167,53 +167,55 @@
       <!-- SECTION 1: OVERVIEW DASHBOARD -->
       <!-- ============================================== -->
       <section id="tab-overview" class="tab-pane active">
-        <!-- Command Launch Banner -->
+        <!-- Command Launch Banner - Enterprise SOC Horizontal Layout -->
         <div class="hero-launch-card">
-          <div class="hero-text-content">
-            <span class="hero-badge">3-LAYER BEHAVIOURAL THREAT DEFENSE</span>
-            <h2>Multi-Stage Ransomware Detection &amp; Automated Containment</h2>
-            <p>
-              RansomWatch correlates 15 runtime behavioural parameters, unsupervised Isolation Forest anomaly scoring,
-              automated containment playbooks, and static PE binary structural classification to neutralize ransomware before encryption cascades.
-            </p>
-            <div class="hero-buttons-row">
-              <button class="btn btn-primary" id="hero-run-sim-btn">
+          <div class="hero-main-row">
+            <div class="hero-text-content">
+              <div class="hero-meta-row">
+                <span class="hero-badge">3-LAYER BEHAVIOURAL THREAT DEFENSE</span>
+                <span class="hero-soc-pill"><span class="pulse-dot"></span> REAL-TIME ENGINE ACTIVE</span>
+              </div>
+              <h2>Multi-Stage Ransomware Detection &amp; Automated Containment</h2>
+              <p>
+                RansomWatch correlates 15 runtime behavioural parameters, unsupervised Isolation Forest anomaly scoring,
+                automated containment playbooks, and static PE binary structural classification to neutralize ransomware.
+              </p>
+            </div>
+            <div class="hero-cta-group">
+              <button class="btn btn-primary btn-sim-primary" id="hero-run-sim-btn">
                 <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 19 12 6 20 6 4"/></svg>
                 <span>Launch Attack Simulation</span>
               </button>
-              <button class="btn btn-outline" data-goto="tab-layers">
-                <span>View Defence Layers &rarr;</span>
-              </button>
-              <button class="btn btn-ghost" data-goto="tab-guide">
-                <span>Technical Specifications</span>
-              </button>
-              <button class="btn btn-outline btn-sm" id="refresh-overview-btn" style="margin-left:auto;">
-                <span>Refresh Overview</span>
+              <button class="btn btn-outline btn-sm" id="refresh-overview-btn" title="Refresh Telemetry">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <span>Refresh</span>
               </button>
             </div>
           </div>
-          <div class="hero-layer-chips">
-            <div class="layer-chip" data-goto="tab-lab">
+
+          <!-- Compact Horizontal 3-Defense-Layers Status Strip -->
+          <div class="hero-layer-chips-row">
+            <div class="layer-chip" data-goto="tab-lab" title="Navigate to Layer 1: Behaviour Monitoring">
               <span class="chip-num">L1</span>
-              <div>
-                <strong>Behaviour Monitoring</strong>
-                <small>15 Parameters &bull; Isolation Forest</small>
+              <div class="chip-content">
+                <strong class="chip-title">Behaviour Monitoring</strong>
+                <small class="chip-sub">15 Parameters &bull; Isolation Forest</small>
               </div>
               <span class="chip-status" id="chip-l1-status">ACTIVE</span>
             </div>
-            <div class="layer-chip" data-goto="tab-layers">
+            <div class="layer-chip" data-goto="tab-layers" title="Navigate to Layer 2: Prevention &amp; Response">
               <span class="chip-num">L2</span>
-              <div>
-                <strong>Containment Playbook</strong>
-                <small>Simulated Host Isolation</small>
+              <div class="chip-content">
+                <strong class="chip-title">Containment Playbook</strong>
+                <small class="chip-sub">Simulated Host Isolation</small>
               </div>
               <span class="chip-status" id="chip-l2-status">READY</span>
             </div>
-            <div class="layer-chip" data-goto="tab-ml-classifier">
+            <div class="layer-chip" data-goto="tab-ml-classifier" title="Navigate to Layer 3: PE Classification">
               <span class="chip-num">L3</span>
-              <div>
-                <strong>PE Binary Classification</strong>
-                <small>Random Forest &bull; PE Headers</small>
+              <div class="chip-content">
+                <strong class="chip-title">PE Binary Classification</strong>
+                <small class="chip-sub">Random Forest &bull; PE Headers</small>
               </div>
               <span class="chip-status" id="chip-l3-status">ONLINE</span>
             </div>
@@ -276,28 +278,30 @@
           </div>
         </div>
 
-        <!-- Security Events Table (Real EDR format) -->
+        <!-- Security Events Table (Enterprise SOC EDR Format) -->
         <div class="panel-box">
           <div class="panel-box-header">
-            <h3>Recent High-Priority Detections</h3>
-            <button class="btn btn-sm btn-link" data-goto="tab-alerts">View Full Incident Log &rarr;</button>
+            <div>
+              <h3>Recent High-Priority Detections</h3>
+              <p class="panel-subtitle">Latest anomalous process events and behavioural tripwires across endpoints</p>
+            </div>
+            <button class="btn btn-sm btn-outline" data-goto="tab-alerts">View Full Incident Log &rarr;</button>
           </div>
           <div class="table-responsive">
-            <table class="data-table" id="overview-recent-table">
+            <table class="data-table data-table-compact" id="overview-recent-table">
               <thead>
                 <tr>
-                  <th>Incident ID</th>
-                  <th>Timestamp</th>
-                  <th>Process (PID)</th>
-                  <th>Target Scope</th>
-                  <th>Severity</th>
-                  <th>Risk Score</th>
-                  <th>Primary Indicator</th>
-                  <th>State</th>
+                  <th style="width: 130px;">Event ID</th>
+                  <th style="width: 95px;">Timestamp (UTC)</th>
+                  <th style="width: 175px;">Process (PID)</th>
+                  <th>Detection Reason / Primary Indicator</th>
+                  <th style="width: 100px; text-align: center;">Severity</th>
+                  <th style="width: 85px; text-align: center;">Risk Score</th>
+                  <th style="width: 95px; text-align: center;">Status</th>
                 </tr>
               </thead>
               <tbody id="overview-recent-tbody">
-                <tr><td colspan="8" class="text-center text-muted">Awaiting telemetry feed...</td></tr>
+                <tr><td colspan="7" class="text-center text-muted" style="padding: 20px;">Awaiting telemetry feed...</td></tr>
               </tbody>
             </table>
           </div>

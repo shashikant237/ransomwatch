@@ -325,9 +325,16 @@ function evaluateClientFeatures(processName, processId, userAccount, targetPath,
 
 function seedClientIncidents() {
   const seedKeys = ["normal_office", "rapid_file_mods", "mass_rename", "ransom_note", "high_entropy", "combined_attack"];
-  state.incidents = seedKeys.map(k => {
+  const now = Date.now();
+  state.incidents = seedKeys.map((k, idx) => {
     const sc = PRESET_SCENARIOS[k];
-    return evaluateClientFeatures(sc.process_name, sc.process_id, sc.user_account, sc.target_path, sc.features);
+    const inc = evaluateClientFeatures(sc.process_name, sc.process_id, sc.user_account, sc.target_path, sc.features);
+    // Stagger timestamps across the last 15 minutes so the timeline and table reflect realistic sequential telemetry
+    const offsetMs = (seedKeys.length - 1 - idx) * 180000; // 3 min intervals
+    inc.timestamp = new Date(now - offsetMs).toISOString();
+    inc.incident_id = `INC-${String(1001 + idx)}`;
+    inc.is_simulated = true;
+    return inc;
   });
 }
 
@@ -451,30 +458,66 @@ async function loadDashboardData() {
   renderCharts(summary, events);
 }
 
+function formatTimeOnly(ts) {
+  if (!ts) return "--:--:--";
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return ts;
+  return d.toTimeString().split(" ")[0]; // HH:MM:SS
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function renderRecentEventsTable(events) {
   const tbody = document.getElementById("overview-recent-tbody");
   if (!tbody) return;
 
   if (!events || events.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No telemetry records recorded yet.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding: 24px;">No security telemetry records recorded yet.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = events.slice(0, 7).map(e => {
+  tbody.innerHTML = events.slice(0, 8).map(e => {
     const topContrib = (e.top_contributors && e.top_contributors[0]) 
       ? e.top_contributors[0].display_name 
-      : "Baseline Telemetry";
+      : (e.detection_reason || "Benign Baseline");
+
+    const isSim = e.is_simulated || (e.incident_id && (e.incident_id.includes("SIM") || e.incident_id.startsWith("INC-100")));
+    const tagBadge = isSim 
+      ? `<span class="badge-tag-sim" title="Simulated behavioral telemetry event">[SIM]</span>` 
+      : `<span class="badge-tag-live" title="Live intercepted endpoint telemetry">[LIVE]</span>`;
 
     return `
       <tr>
-        <td><code>${e.incident_id}</code></td>
-        <td>${formatDate(e.timestamp)}</td>
-        <td><strong>${e.process_name}</strong> <small class="text-muted">(${e.process_id})</small></td>
-        <td><small>${e.target_path}</small></td>
-        <td><span class="badge-status ${getRiskClass(e.risk_level)}">${e.risk_level}</span></td>
-        <td><strong>${e.risk_score}</strong></td>
-        <td><span class="text-cyan">${topContrib}</span></td>
-        <td><span class="badge-status">${e.status}</span></td>
+        <td>
+          <div class="cell-event-id">
+            ${tagBadge}
+            <code class="code-id">${escapeHtml(e.incident_id)}</code>
+          </div>
+        </td>
+        <td class="text-mono text-muted text-xs">${formatTimeOnly(e.timestamp)}</td>
+        <td>
+          <div class="cell-process">
+            <span class="process-name">${escapeHtml(e.process_name)}</span>
+            <span class="process-pid">PID ${e.process_id}</span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-reason" title="${escapeHtml(e.dynamic_explanation || topContrib)}">
+            <span class="reason-highlight">${escapeHtml(topContrib)}</span>
+            ${e.target_path ? `<span class="reason-sub">${escapeHtml(e.target_path)}</span>` : ""}
+          </div>
+        </td>
+        <td style="text-align: center;"><span class="badge-status ${getRiskClass(e.risk_level)}">${escapeHtml(e.risk_level)}</span></td>
+        <td style="text-align: center;" class="text-mono font-bold">${e.risk_score}</td>
+        <td style="text-align: center;"><span class="status-pill status-${(e.status || 'NEW').toLowerCase()}">${escapeHtml(e.status)}</span></td>
       </tr>
     `;
   }).join("");
@@ -494,38 +537,54 @@ function renderCharts(summary, events) {
 
   const timelineCanvas = document.getElementById("timelineChart");
   if (timelineCanvas) {
-    const sortedEvents = [...events].reverse();
-    const labels = sortedEvents.map(e => formatDate(e.timestamp));
+    const sortedEvents = [...(events || [])].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    
+    // Format distinct timestamps without duplicating identical strings
+    const seenTimes = new Map();
+    const labels = sortedEvents.map((e, idx) => {
+      const baseTime = formatTimeOnly(e.timestamp);
+      if (!seenTimes.has(baseTime)) {
+        seenTimes.set(baseTime, 1);
+        return baseTime;
+      } else {
+        const count = seenTimes.get(baseTime);
+        seenTimes.set(baseTime, count + 1);
+        return `${baseTime} (+${count}s)`;
+      }
+    });
+
     const riskScores = sortedEvents.map(e => e.risk_score);
-    const mlScores = sortedEvents.map(e => e.ml_score);
+    const mlScores = sortedEvents.map(e => (e.ml_score !== undefined ? e.ml_score : (e.ml_result ? e.ml_result.calibrated_anomaly_score : 0)));
 
     if (state.charts.timeline) state.charts.timeline.destroy();
 
     state.charts.timeline = new Chart(timelineCanvas, {
       type: "line",
       data: {
-        labels: labels.length ? labels : ["Event 1", "Event 2", "Event 3"],
+        labels: labels.length ? labels : ["10:00:00", "10:05:00", "10:10:00"],
         datasets: [
           {
-            label: "Composite Risk Score",
+            label: "Composite Risk Score (Heuristic + Behavioral)",
             data: riskScores.length ? riskScores : [10, 25, 85],
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59, 130, 246, 0.08)",
+            borderColor: "#38bdf8",
+            backgroundColor: "rgba(56, 189, 248, 0.06)",
             fill: true,
-            tension: 0.3,
+            tension: 0.25,
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: "#3b82f6"
+            pointHoverRadius: 5,
+            pointBackgroundColor: "#38bdf8"
           },
           {
-            label: "ML Anomaly Score",
+            label: "ML Anomaly Score (Isolation Forest Outlier)",
             data: mlScores.length ? mlScores : [5, 30, 90],
             borderColor: "#f59e0b",
-            borderDash: [3, 3],
+            borderDash: [4, 4],
             fill: false,
             tension: 0.2,
             borderWidth: 1.5,
-            pointRadius: 2,
+            pointRadius: 2.5,
+            pointHoverRadius: 4,
             pointBackgroundColor: "#f59e0b"
           }
         ]
@@ -533,13 +592,67 @@ function renderCharts(summary, events) {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
         plugins: {
-          legend: { labels: { color: "#94a3b8", font: { family: "Inter, sans-serif", size: 11 } } },
-          tooltip: { backgroundColor: "#0e1422", titleColor: "#f1f5f9", bodyColor: "#cbd5e1", borderColor: "#1c273e", borderWidth: 1 }
+          legend: {
+            position: "top",
+            labels: {
+              color: "#94a3b8",
+              font: { family: "Inter, sans-serif", size: 10, weight: "500" },
+              boxWidth: 12,
+              padding: 12
+            }
+          },
+          tooltip: {
+            backgroundColor: "#0b101b",
+            titleColor: "#f1f5f9",
+            bodyColor: "#cbd5e1",
+            borderColor: "#1e293b",
+            borderWidth: 1,
+            padding: 10,
+            callbacks: {
+              title(items) {
+                const idx = items[0].dataIndex;
+                const ev = sortedEvents[idx];
+                if (!ev) return "Telemetry Point";
+                const isSim = ev.is_simulated || (ev.incident_id && (ev.incident_id.includes("SIM") || ev.incident_id.startsWith("INC-100")));
+                return `${ev.incident_id} • ${ev.process_name} (PID ${ev.process_id}) ${isSim ? '[SIM]' : '[LIVE]'}`;
+              },
+              label(context) {
+                const val = context.parsed.y;
+                if (context.datasetIndex === 0) {
+                  return ` Composite Risk: ${val}/100`;
+                } else {
+                  return ` ML Anomaly: ${val}/100`;
+                }
+              },
+              afterBody(items) {
+                const idx = items[0].dataIndex;
+                const ev = sortedEvents[idx];
+                if (!ev) return [];
+                const topSig = (ev.top_contributors && ev.top_contributors[0]) ? ev.top_contributors[0].display_name : (ev.detection_reason || "Baseline");
+                return [
+                  `Signal: ${topSig}`,
+                  `Severity: ${ev.risk_level} | Status: ${ev.status || 'NEW'}`
+                ];
+              }
+            }
+          }
         },
         scales: {
-          x: { ticks: { color: "#64748b", font: { size: 10 } }, grid: { color: "rgba(255, 255, 255, 0.04)" } },
-          y: { min: 0, max: 100, ticks: { color: "#64748b", font: { size: 10 } }, grid: { color: "rgba(255, 255, 255, 0.04)" } }
+          x: {
+            ticks: { color: "#64748b", font: { family: "JetBrains Mono, monospace", size: 9 }, maxRotation: 0 },
+            grid: { color: "rgba(255, 255, 255, 0.03)" }
+          },
+          y: {
+            min: 0,
+            max: 100,
+            ticks: { stepSize: 25, color: "#64748b", font: { family: "JetBrains Mono, monospace", size: 9 } },
+            grid: { color: "rgba(255, 255, 255, 0.04)" }
+          }
         }
       }
     });
@@ -553,27 +666,117 @@ function renderCharts(summary, events) {
     const med = summary.suspicious_events || 0;
     const high = summary.high_risk_incidents || 0;
     const crit = summary.critical_incidents || 0;
+    const total = low + med + high + crit;
 
-    state.charts.riskDist = new Chart(distCanvas, {
-      type: "doughnut",
-      data: {
-        labels: ["Low Risk", "Medium", "High", "Critical"],
-        datasets: [{
-          data: (low + med + high + crit > 0) ? [low, med, high, crit] : [4, 2, 2, 1],
-          backgroundColor: ["#10b981", "#f59e0b", "#f97316", "#ef4444"],
-          borderColor: "#141c30",
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "70%",
-        plugins: {
-          legend: { position: "bottom", labels: { color: "#94a3b8", font: { family: "Inter, sans-serif", size: 10 } } }
-        }
+    // Center Text Plugin
+    const centerPlugin = {
+      id: "socCenterText",
+      beforeDraw(chart) {
+        const { width, height, ctx } = chart;
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.font = "600 9px 'JetBrains Mono', monospace";
+        ctx.fillStyle = "#64748b";
+        ctx.fillText("TOTAL INCIDENTS", width / 2, height / 2 - 9);
+
+        ctx.font = "700 20px 'JetBrains Mono', monospace";
+        ctx.fillStyle = total > 0 ? "#f1f5f9" : "#64748b";
+        ctx.fillText(String(total), width / 2, height / 2 + 11);
+
+        ctx.restore();
       }
-    });
+    };
+
+    if (total === 0) {
+      // Honest empty state: no fake slices
+      state.charts.riskDist = new Chart(distCanvas, {
+        type: "doughnut",
+        data: {
+          labels: ["No Recorded Threats"],
+          datasets: [{
+            data: [1],
+            backgroundColor: ["#141c2e"],
+            borderColor: "#0e1422",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "74%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { color: "#64748b", font: { family: "Inter, sans-serif", size: 10 } }
+            },
+            tooltip: { enabled: false }
+          }
+        },
+        plugins: [centerPlugin]
+      });
+    } else {
+      state.charts.riskDist = new Chart(distCanvas, {
+        type: "doughnut",
+        data: {
+          labels: ["Low Risk", "Medium", "High", "Critical"],
+          datasets: [{
+            data: [low, med, high, crit],
+            backgroundColor: ["#10b981", "#f59e0b", "#f97316", "#ef4444"],
+            borderColor: "#141c30",
+            borderWidth: 2,
+            hoverOffset: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "72%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "#94a3b8",
+                font: { family: "Inter, sans-serif", size: 10 },
+                boxWidth: 10,
+                padding: 8,
+                generateLabels(chart) {
+                  const data = chart.data;
+                  return data.labels.map((label, i) => {
+                    const count = data.datasets[0].data[i] || 0;
+                    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                    return {
+                      text: `${label}: ${count} (${pct}%)`,
+                      fillStyle: data.datasets[0].backgroundColor[i],
+                      strokeStyle: data.datasets[0].borderColor,
+                      lineWidth: 1,
+                      hidden: isNaN(data.datasets[0].data[i]) || (chart.getDatasetMeta(0).data[i] && chart.getDatasetMeta(0).data[i].hidden),
+                      index: i
+                    };
+                  });
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: "#0b101b",
+              titleColor: "#f1f5f9",
+              bodyColor: "#cbd5e1",
+              borderColor: "#1e293b",
+              borderWidth: 1,
+              callbacks: {
+                label(context) {
+                  const count = context.parsed;
+                  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                  return ` ${context.label}: ${count} incident(s) (${pct}%)`;
+                }
+              }
+            }
+          }
+        },
+        plugins: [centerPlugin]
+      });
+    }
   }
 }
 
