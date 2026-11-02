@@ -509,23 +509,24 @@ function renderCharts(summary, events) {
           {
             label: "Composite Risk Score",
             data: riskScores.length ? riskScores : [10, 25, 85],
-            borderColor: "#00f0ff",
-            backgroundColor: "rgba(0, 240, 255, 0.12)",
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59, 130, 246, 0.08)",
             fill: true,
-            tension: 0.35,
+            tension: 0.3,
             borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: "#00f0ff"
+            pointRadius: 3,
+            pointBackgroundColor: "#3b82f6"
           },
           {
             label: "ML Anomaly Score",
             data: mlScores.length ? mlScores : [5, 30, 90],
             borderColor: "#f59e0b",
-            borderDash: [4, 4],
+            borderDash: [3, 3],
             fill: false,
             tension: 0.2,
             borderWidth: 1.5,
-            pointRadius: 2
+            pointRadius: 2,
+            pointBackgroundColor: "#f59e0b"
           }
         ]
       },
@@ -533,12 +534,12 @@ function renderCharts(summary, events) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { labels: { color: "#8493b2", font: { family: "Plus Jakarta Sans", size: 11 } } },
-          tooltip: { backgroundColor: "#0c162e", titleColor: "#00f0ff", bodyColor: "#ffffff", borderColor: "#1a294d", borderWidth: 1 }
+          legend: { labels: { color: "#94a3b8", font: { family: "Inter, sans-serif", size: 11 } } },
+          tooltip: { backgroundColor: "#0e1422", titleColor: "#f1f5f9", bodyColor: "#cbd5e1", borderColor: "#1c273e", borderWidth: 1 }
         },
         scales: {
-          x: { ticks: { color: "#8493b2", font: { size: 10 } }, grid: { color: "#1a294d" } },
-          y: { min: 0, max: 100, ticks: { color: "#8493b2", font: { size: 10 } }, grid: { color: "#1a294d" } }
+          x: { ticks: { color: "#64748b", font: { size: 10 } }, grid: { color: "rgba(255, 255, 255, 0.04)" } },
+          y: { min: 0, max: 100, ticks: { color: "#64748b", font: { size: 10 } }, grid: { color: "rgba(255, 255, 255, 0.04)" } }
         }
       }
     });
@@ -560,16 +561,16 @@ function renderCharts(summary, events) {
         datasets: [{
           data: (low + med + high + crit > 0) ? [low, med, high, crit] : [4, 2, 2, 1],
           backgroundColor: ["#10b981", "#f59e0b", "#f97316", "#ef4444"],
-          borderColor: "#0c162e",
-          borderWidth: 3
+          borderColor: "#141c30",
+          borderWidth: 2
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: "68%",
+        cutout: "70%",
         plugins: {
-          legend: { position: "bottom", labels: { color: "#8493b2", font: { size: 10 } } }
+          legend: { position: "bottom", labels: { color: "#94a3b8", font: { family: "Inter, sans-serif", size: 10 } } }
         }
       }
     });
@@ -1709,7 +1710,11 @@ function renderPEClassificationResult(res) {
     }
   }
 
-  if (icon) icon.textContent = isMal ? "🔴" : "🛡️";
+  if (icon) {
+    icon.innerHTML = isMal
+      ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+      : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
+  }
   if (title) title.textContent = isMal ? "MALICIOUS EXECUTABLE DETECTED" : "BENIGN / SAFE EXECUTABLE";
   if (sub) sub.textContent = `Confidence: ${(res.confidence * 100).toFixed(1)}% • Model: ${res.model_name}`;
   
@@ -1726,7 +1731,7 @@ function renderPEClassificationResult(res) {
 
   if (anomaliesList) {
     if (!res.structural_anomalies || res.structural_anomalies.length === 0) {
-      anomaliesList.innerHTML = `<div class="empty-state text-success">✔ Clean binary profile. No structural PE anomalies detected.</div>`;
+      anomaliesList.innerHTML = `<div class="text-muted text-sm">Clean binary profile. No structural PE anomalies detected.</div>`;
     } else {
       anomaliesList.innerHTML = res.structural_anomalies.map(a => `
         <div class="contributor-item">
@@ -2244,9 +2249,9 @@ class SimulationController {
 
       <div class="report-section-title">Defense Coordination Efficacy</div>
       <ul class="layer-feature-list mt-2">
-        <li><span>✔</span> <strong>Layer 1 (Behaviour):</strong> Isolation Forest and heuristic rules flagged the statistical outlier in 180ms.</li>
-        <li><span>✔</span> <strong>Layer 2 (Prevention):</strong> Automated playbook suspended process thread tree and isolated endpoint from corporate subnet. (Simulated)</li>
-        <li><span>✔</span> <strong>Layer 3 (ML PE Classifier):</strong> Random Forest evaluated PE header structure: confirmed missing debug directory and embedded Bitcoin address strings with 99.4% confidence.</li>
+        <li><span>&bull;</span> <strong>Layer 1 (Behaviour):</strong> Isolation Forest and heuristic rules flagged the statistical outlier in 180ms.</li>
+        <li><span>&bull;</span> <strong>Layer 2 (Prevention):</strong> Automated playbook suspended process thread tree and isolated endpoint from corporate subnet. (Simulated)</li>
+        <li><span>&bull;</span> <strong>Layer 3 (ML PE Classifier):</strong> Random Forest evaluated PE header structure: confirmed missing debug directory and embedded Bitcoin address strings with 99.4% confidence.</li>
       </ul>
 
       <div class="report-section-title">Simulated Remediation & Chain of Custody</div>
