@@ -1,6 +1,6 @@
 """Pydantic schemas for RansomWatch.
 Defines strict validation for behavioral parameters, analysis requests,
-threat assessment outputs, and response simulation workflows.
+threat assessment outputs, PE executable classification, and live attack simulation workflows.
 """
 
 from typing import List, Optional, Dict, Any
@@ -165,3 +165,71 @@ class DashboardSummary(BaseModel):
     rules_active_count: int
     model_status: str
     last_updated: str
+    layer1_status: Optional[str] = "ACTIVE"
+    layer2_status: Optional[str] = "READY"
+    layer3_status: Optional[str] = "ONLINE"
+
+
+# =====================================================================
+# LAYER 3: PE Executable Malware Classification Schemas
+# =====================================================================
+
+class PEFeatures(BaseModel):
+    """The 15 executable header structural features for Layer 3 classification."""
+    Machine: int = Field(default=34404, description="Target machine architecture (e.g. 332 x86, 34404 x64)")
+    DebugSize: int = Field(default=56, ge=0, description="Size of debug directory in bytes")
+    DebugRVA: int = Field(default=16384, ge=0, description="RVA of debug directory")
+    MajorImageVersion: int = Field(default=1, ge=0, description="Major image version")
+    MajorOSVersion: int = Field(default=10, ge=0, description="Minimum OS version required")
+    ExportRVA: int = Field(default=0, ge=0, description="RVA of export directory")
+    ExportSize: int = Field(default=0, ge=0, description="Size of export directory")
+    IatVRA: int = Field(default=8192, ge=0, description="Import Address Table RVA")
+    MajorLinkerVersion: int = Field(default=14, ge=0, description="Compiler linker major version")
+    MinorLinkerVersion: int = Field(default=0, ge=0, description="Compiler linker minor version")
+    NumberOfSections: int = Field(default=6, ge=1, le=100, description="Number of PE sections (.text, .data, etc.)")
+    SizeOfStackReserve: int = Field(default=1048576, ge=0, description="Stack reserve size in bytes")
+    DllCharacteristics: int = Field(default=33120, ge=0, description="PE security flags (NX_COMPAT, DYNAMIC_BASE)")
+    ResourceSize: int = Field(default=12000, ge=0, description="Resource section size in bytes")
+    BitcoinAddresses: int = Field(default=0, ge=0, description="Extracted cryptocurrency wallet string matches")
+
+
+class PEClassificationRequest(BaseModel):
+    file_name: str = Field(default="sample.exe", min_length=1, max_length=128)
+    md5_hash: Optional[str] = Field(default="d41d8cd98f00b204e9800998ecf8427e")
+    features: PEFeatures
+
+
+class PEClassificationResult(BaseModel):
+    file_name: str
+    classification: str  # "BENIGN" or "MALICIOUS"
+    is_malicious: bool
+    confidence: float
+    malware_probability_score: float
+    model_used: str
+    detected_anomalies: List[str]
+    explanation: str
+    dataset_disclaimer: str
+
+
+# =====================================================================
+# SIMULATION CENTRE & DEFENCE LAYERS SCHEMAS
+# =====================================================================
+
+class SimulationStageEvent(BaseModel):
+    stage_id: int
+    stage_name: str
+    timestamp: str
+    event_type: str
+    description: str
+    process_name: str
+    pid: int
+    risk_score: float
+    layer_active: str
+    is_simulated: bool = True
+
+
+class DefenseLayersStatus(BaseModel):
+    layer1_monitoring: Dict[str, Any]
+    layer2_prevention: Dict[str, Any]
+    layer3_classification: Dict[str, Any]
+    active_defense_mode: str = "MULTI_LAYER_COORDINATED"

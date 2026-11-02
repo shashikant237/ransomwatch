@@ -17,7 +17,13 @@ from app.main import (
     calculate_entropy_demo,
     acknowledge_incident,
     simulate_response_action,
-    export_incidents
+    export_incidents,
+    get_defense_layers_status,
+    classify_pe_executable,
+    get_pe_model_comparison,
+    get_pe_sample_profiles,
+    get_simulation_scenario_stages,
+    execute_simulation_stage
 )
 from app.schemas import (
     EventAnalysisRequest,
@@ -25,7 +31,9 @@ from app.schemas import (
     RulesUpdateRequest,
     RuleConfig,
     AcknowledgeRequest,
-    ResponseSimulationRequest
+    ResponseSimulationRequest,
+    PEClassificationRequest,
+    PEFeatures
 )
 from app.feature_extractor import PRESET_SCENARIOS
 
@@ -162,3 +170,62 @@ def test_export_handler():
 
     json_response = export_incidents("json")
     assert json_response.media_type == "application/json"
+
+
+def test_defense_layers_status_handler():
+    status = get_defense_layers_status()
+    assert status.layer1_monitoring["status"] == "ACTIVE"
+    assert status.layer2_prevention["status"] == "READY"
+    assert status.layer3_classification["status"] == "ONLINE"
+    assert status.active_defense_mode == "MULTI_LAYER_COORDINATED"
+
+
+def test_pe_classification_handlers():
+    samples = get_pe_sample_profiles()
+    assert "benign_svchost" in samples
+    assert "malware_wannacry" in samples
+
+    # Test benign prediction
+    benign_req = PEClassificationRequest(
+        file_name="svchost.exe",
+        features=PEFeatures(**samples["benign_svchost"]["features"])
+    )
+    benign_res = classify_pe_executable(benign_req)
+    assert benign_res.classification == "BENIGN"
+    assert benign_res.is_malicious is False
+
+    # Test malicious prediction
+    mal_req = PEClassificationRequest(
+        file_name="wannacry_dropper.exe",
+        features=PEFeatures(**samples["malware_wannacry"]["features"])
+    )
+    mal_res = classify_pe_executable(mal_req)
+    assert mal_res.classification == "MALICIOUS"
+    assert mal_res.is_malicious is True
+    assert len(mal_res.detected_anomalies) > 0
+
+
+def test_pe_model_comparison_handler():
+    info = get_pe_model_comparison()
+    assert info["loaded"] is True
+    assert "Random Forest" in info["model_comparison"]["models"]
+    assert "Decision Tree" in info["model_comparison"]["models"]
+    assert "Support Vector Machine (SVM)" in info["model_comparison"]["models"]
+
+
+def test_simulation_stages_handlers():
+    stages_data = get_simulation_scenario_stages()
+    assert stages_data["metadata"]["total_stages"] == 6
+    assert len(stages_data["stages"]) == 6
+
+    # Test running stage 1
+    res1 = execute_simulation_stage(1)
+    assert res1["status"] == "SUCCESS"
+    assert res1["stage"]["stage"] == 1
+    assert res1["stage"]["system_status"] == "NORMAL"
+
+    # Test running stage 4 (simulated response)
+    res4 = execute_simulation_stage(4)
+    assert res4["status"] == "SUCCESS"
+    assert res4["stage"]["stage"] == 4
+    assert "CONTAINED" in res4["stage"]["system_status"]

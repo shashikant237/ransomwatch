@@ -1,0 +1,64 @@
+{
+  "model_name": "PE-Malware-Classifier (Random Forest)",
+  "algorithm": "Random Forest",
+  "training_timestamp": "2026-11-02T17:10:49.226143+00:00",
+  "random_seed": 42,
+  "total_dataset_size": 3500,
+  "train_samples": 2800,
+  "test_samples": 700,
+  "feature_columns": [
+    "Machine",
+    "DebugSize",
+    "DebugRVA",
+    "MajorImageVersion",
+    "MajorOSVersion",
+    "ExportRVA",
+    "ExportSize",
+    "IatVRA",
+    "MajorLinkerVersion",
+    "MinorLinkerVersion",
+    "NumberOfSections",
+    "SizeOfStackReserve",
+    "DllCharacteristics",
+    "ResourceSize",
+    "BitcoinAddresses"
+  ],
+  "excluded_columns": [
+    "FileName",
+    "md5Hash"
+  ],
+  "target_mapping": {
+    "1": "Benign (Clean Application)",
+    "0": "Malicious (Executable Threat / Dropper)"
+  },
+  "evaluation_metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "confusion_matrix": {
+      "true_negative": 315,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_positive": 385
+    }
+  },
+  "feature_importances": {
+    "ResourceSize": 0.2952,
+    "MajorLinkerVersion": 0.2227,
+    "NumberOfSections": 0.1365,
+    "MajorOSVersion": 0.1324,
+    "DllCharacteristics": 0.0465,
+    "SizeOfStackReserve": 0.0416,
+    "DebugRVA": 0.0369,
+    "IatVRA": 0.0314,
+    "DebugSize": 0.019,
+    "BitcoinAddresses": 0.017,
+    "MinorLinkerVersion": 0.0118,
+    "ExportSize": 0.0034,
+    "MajorImageVersion": 0.0028,
+    "ExportRVA": 0.0025,
+    "Machine": 0.0003
+  },
+  "disclaimer": "This model classifies general executable binaries as benign or malicious based on PE header structural properties. It does not solely identify ransomware specifically, and is separated from Layer 1 behavioural anomaly detection."
+}

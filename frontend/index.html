@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RansomWatch — Behaviour-Based Ransomware Detection with Explainable AI</title>
+  <title>RansomWatch — Behaviour-Based Ransomware Detection & 3-Layer Cyber Defense Platform</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Chart.js for responsive cyber telemetry charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Top Navigation Bar -->
@@ -23,7 +23,7 @@
       </div>
       <div>
         <div class="brand-title">RANSOM<span>WATCH</span></div>
-        <div class="brand-sub">Behaviour-Based Ransomware Detection &bull; Explainable AI</div>
+        <div class="brand-sub">Behaviour-Based Ransomware Detection &bull; 3-Layer Defense &bull; Explainable AI</div>
       </div>
     </div>
 
@@ -32,51 +32,80 @@
       <span class="subject-tag">Network Security &amp; Cryptography</span>
     </div>
 
-    <div class="header-status">
-      <div class="status-indicator">
-        <span class="pulse-dot"></span>
-        <span id="engine-status">SYSTEM ONLINE</span>
-      </div>
-      <div class="model-pill" id="header-model-pill">
-        <span class="badge-icon">🧠</span> Isolation Forest v1.0.0
+    <!-- Top Action: RUN LIVE SIMULATION -->
+    <div class="header-actions-group">
+      <button class="btn btn-simulation-pulse" id="top-run-simulation-btn">
+        <span class="pulse-ring"></span>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <strong>RUN LIVE SIMULATION</strong>
+      </button>
+
+      <div class="header-status">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span id="engine-status">SYSTEM ONLINE</span>
+        </div>
+        <div class="model-pill" id="header-model-pill" title="Layer 1 + Layer 3 Models Active">
+          <span class="badge-icon">🧠</span> 3-Layer Defense Active
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Main Container -->
   <div class="app-layout">
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation (8 Sections) -->
     <aside class="sidebar">
       <nav class="nav-menu">
+        <!-- 1. Overview -->
         <button class="nav-item active" data-tab="tab-overview">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           Overview
         </button>
+
+        <!-- 2. Behaviour Monitoring -->
         <button class="nav-item" data-tab="tab-lab">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 2v7.31L4.69 17.5a2 2 0 0 0 1.62 3.5h15.38a2 2 0 0 0 1.62-3.5L18 9.31V2"/><line x1="8" y1="2" x2="16" y2="2"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-          Detection Lab
-          <span class="badge-highlight">Flagship</span>
+          Behaviour Monitoring
         </button>
-        <button class="nav-item" data-tab="tab-live">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Live Activity
+
+        <!-- 3. Defence Layers -->
+        <button class="nav-item" data-tab="tab-layers">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Defence Layers
+          <span class="badge-highlight">3 Layers</span>
         </button>
+
+        <!-- 4. ML Detection -->
+        <button class="nav-item" data-tab="tab-ml-classifier">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          ML Detection (Layer 3)
+        </button>
+
+        <!-- 5. Simulation Centre -->
+        <button class="nav-item nav-item-simulation" data-tab="tab-simulation">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Simulation Centre
+          <span class="badge-flagship">Flagship</span>
+        </button>
+
+        <!-- 6. Alerts & Incidents -->
         <button class="nav-item" data-tab="tab-alerts">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           Alerts &amp; Incidents
           <span class="badge-count" id="nav-alert-count">0</span>
         </button>
+
+        <!-- 7. Detection Rules -->
         <button class="nav-item" data-tab="tab-rules">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           Detection Rules
         </button>
-        <button class="nav-item" data-tab="tab-model">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Model Insights
-        </button>
-        <button class="nav-item" data-tab="tab-response">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Response Centre
+
+        <!-- 8. Faculty Guide & Settings -->
+        <button class="nav-item" data-tab="tab-guide">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Faculty Guide &amp; Settings
         </button>
       </nav>
 
@@ -91,32 +120,71 @@
       </div>
     </aside>
 
-    <!-- Main Content Panels -->
+    <!-- Main Content Area -->
     <main class="content-area">
-      <!-- Banner Message -->
+      <!-- Toast Alert -->
       <div id="status-toast" class="toast hidden"></div>
 
       <!-- ============================================== -->
-      <!-- SECTION A: OVERVIEW -->
+      <!-- SECTION 1: OVERVIEW -->
       <!-- ============================================== -->
       <section id="tab-overview" class="tab-pane active">
-        <div class="section-header">
-          <div>
-            <h2>Security Operations Overview</h2>
-            <p class="subtitle">Aggregate telemetry, threat velocity, and machine learning anomaly metrics.</p>
+        <!-- Hero Launch Banner -->
+        <div class="hero-launch-card">
+          <div class="hero-text-content">
+            <span class="hero-badge">3-LAYER DEFENSE ARCHITECTURE</span>
+            <h2>Multi-Stage Ransomware Detection &amp; Response Platform</h2>
+            <p>
+              RansomWatch correlates 15 runtime behavioural parameters, machine learning anomaly detection,
+              automated containment playbooks, and static PE executable classification to neutralize ransomware before encryption cascades.
+            </p>
+            <div class="hero-buttons-row">
+              <button class="btn btn-primary btn-lg" id="hero-run-sim-btn">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Launch Live Attack Simulation
+              </button>
+              <button class="btn btn-outline" data-goto="tab-layers">
+                Explore Defence Layers &rarr;
+              </button>
+              <button class="btn btn-ghost" data-goto="tab-guide">
+                How It Works (Faculty Guide)
+              </button>
+            </div>
           </div>
-          <button class="btn btn-outline" id="refresh-overview-btn">
-            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-            Refresh
-          </button>
+          <div class="hero-layer-chips">
+            <div class="layer-chip" data-goto="tab-lab">
+              <span class="chip-num">L1</span>
+              <div>
+                <strong>Behaviour Monitoring</strong>
+                <small>15 features &bull; Isolation Forest</small>
+              </div>
+              <span class="chip-status text-success" id="chip-l1-status">ACTIVE</span>
+            </div>
+            <div class="layer-chip" data-goto="tab-layers">
+              <span class="chip-num">L2</span>
+              <div>
+                <strong>Prevention &amp; Response</strong>
+                <small>Simulated Host Isolation</small>
+              </div>
+              <span class="chip-status text-cyan" id="chip-l2-status">READY</span>
+            </div>
+            <div class="layer-chip" data-goto="tab-ml-classifier">
+              <span class="chip-num">L3</span>
+              <div>
+                <strong>ML Malware Classification</strong>
+                <small>Random Forest &bull; PE Headers</small>
+              </div>
+              <span class="chip-status text-success" id="chip-l3-status">ONLINE</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Metric Cards -->
+        <!-- Metrics Grid -->
         <div class="metrics-grid">
           <div class="metric-card">
             <div class="metric-label">Total Events Analyzed</div>
             <div class="metric-value" id="card-total-events">-</div>
-            <div class="metric-sub">Full multi-feature evaluations</div>
+            <div class="metric-sub">Multi-feature pipeline passes</div>
           </div>
           <div class="metric-card normal-card">
             <div class="metric-label">Normal Baselines</div>
@@ -129,14 +197,14 @@
             <div class="metric-sub">Elevated heuristic markers</div>
           </div>
           <div class="metric-card danger-card">
-            <div class="metric-label">High &amp; Critical Incidents</div>
+            <div class="metric-label">Detected Threats</div>
             <div class="metric-value text-danger" id="card-high-incidents">-</div>
-            <div class="metric-sub">Multi-vector ransomware alerts</div>
+            <div class="metric-sub">High &amp; Critical alerts</div>
           </div>
           <div class="metric-card">
-            <div class="metric-label">Average Risk Score</div>
+            <div class="metric-label">Current Risk Score</div>
             <div class="metric-value text-cyan" id="card-avg-score">-</div>
-            <div class="metric-sub">Calibrated scale (0 - 100)</div>
+            <div class="metric-sub">Composite score (0–100)</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">Active Heuristic Rules</div>
@@ -158,8 +226,8 @@
           </div>
           <div class="chart-container">
             <div class="chart-header">
-              <h3>Threat Level Distribution</h3>
-              <span class="chart-tag">Categorical Risk</span>
+              <h3>Categorical Risk Distribution</h3>
+              <span class="chart-tag">Threat Severity</span>
             </div>
             <div class="chart-canvas-wrap doughnut-wrap">
               <canvas id="riskDistChart"></canvas>
@@ -167,7 +235,7 @@
           </div>
         </div>
 
-        <!-- Recent Incident Quick Table -->
+        <!-- Recent Incidents Table -->
         <div class="panel-box">
           <div class="panel-box-header">
             <h3>Recent High-Priority Detections</h3>
@@ -179,7 +247,7 @@
                 <tr>
                   <th>Incident ID</th>
                   <th>Timestamp</th>
-                  <th>Process</th>
+                  <th>Process (PID)</th>
                   <th>Target Scope</th>
                   <th>Risk Level</th>
                   <th>Risk Score</th>
@@ -196,20 +264,20 @@
       </section>
 
       <!-- ============================================== -->
-      <!-- SECTION C: DETECTION LAB (FLAGSHIP) -->
+      <!-- SECTION 2: BEHAVIOUR MONITORING (DETECTION LAB) -->
       <!-- ============================================== -->
       <section id="tab-lab" class="tab-pane">
         <div class="section-header">
           <div>
-            <h2>Behavioral Detection Laboratory</h2>
-            <p class="subtitle">Safely generate multi-parameter telemetry vectors to test the Rule Engine and Isolation Forest model.</p>
+            <h2>Layer 1: Behaviour-Based Monitoring &amp; Detection Laboratory</h2>
+            <p class="subtitle">Safely generate multi-parameter telemetry vectors to test the Rule Engine, Shannon Entropy shifts, and Isolation Forest model.</p>
           </div>
           <div class="lab-safety-banner">
-            <span class="badge-icon">🛡️</span> SAFE ENVIRONMENT: Evaluates synthetic feature vectors. No actual files are encrypted or altered.
+            <span class="badge-icon">🛡️</span> SAFE ENVIRONMENT: In-memory simulation vectors only. Zero real files modified.
           </div>
         </div>
 
-        <!-- Preset Scenario Buttons -->
+        <!-- Preset Scenarios Bar -->
         <div class="scenarios-bar">
           <span class="scenarios-title">Quick Scenarios:</span>
           <button class="scenario-btn btn-scenario-normal" data-scenario="normal_office">
@@ -489,7 +557,7 @@
               <!-- Machine Learning Anomaly Interpretation Details -->
               <div class="ml-insight-box">
                 <div class="ml-box-header">
-                  <strong>Unsupervised Isolation Forest Analysis</strong>
+                  <strong>Unsupervised Isolation Forest Analysis (Layer 1)</strong>
                   <span class="ml-status-tag" id="lab-ml-classification">INLIER</span>
                 </div>
                 <div class="ml-box-body">
@@ -544,48 +612,503 @@
       </section>
 
       <!-- ============================================== -->
-      <!-- SECTION B: LIVE ACTIVITY -->
+      <!-- SECTION 3: DEFENCE LAYERS ARCHITECTURE VIEW -->
       <!-- ============================================== -->
-      <section id="tab-live" class="tab-pane">
+      <section id="tab-layers" class="tab-pane">
         <div class="section-header">
           <div>
-            <h2>Live Behavioral Telemetry Stream</h2>
-            <p class="subtitle">Real-time incoming process events and behavioral anomaly classifications.</p>
+            <h2>Three-Layer Ransomware Defense Architecture</h2>
+            <p class="subtitle">Comprehensive defensive strategy combining behavioral telemetry, automated containment, and static executable classification.</p>
           </div>
-          <div class="header-actions">
-            <button class="btn btn-outline" id="refresh-live-btn">
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-              Refresh Feed
-            </button>
+          <button class="btn btn-primary" id="layers-launch-sim-btn">
+            ▶ Test All 3 Layers in Live Simulation
+          </button>
+        </div>
+
+        <!-- Layer Architecture Diagram Cards -->
+        <div class="layers-architecture-grid">
+          <!-- Layer 1 Card -->
+          <div class="defense-layer-card layer-card-1">
+            <div class="layer-card-badge">LAYER 1 &bull; DETECTION</div>
+            <div class="layer-card-header">
+              <div class="layer-icon-box">📊</div>
+              <div>
+                <h3>Behaviour-Based Monitoring</h3>
+                <span class="text-muted">Runtime Process Telemetry</span>
+              </div>
+            </div>
+            <div class="layer-card-body">
+              <p class="layer-desc">
+                Continuously tracks processes across 15 behavioral indicators, catching anomalous file write velocity, mass renaming, and encryption loops in real time.
+              </p>
+              <ul class="layer-feature-list">
+                <li><span>✔</span> <strong>15 Behavioral Heuristics</strong> (Rapid modification, renames, unlinking)</li>
+                <li><span>✔</span> <strong>Isolation Forest Anomaly Detection</strong> (150 trees unsupervised ensemble)</li>
+                <li><span>✔</span> <strong>Real-time Shannon Entropy Calculation</strong> (Identifies ciphertext conversion)</li>
+                <li><span>✔</span> <strong>Ransom Note &amp; VSS Tampering Rules</strong> (Exploitation signature triggers)</li>
+              </ul>
+              <div class="layer-status-footer">
+                <span class="status-pill status-active">ACTIVE &bull; CONTINUOUS SCAN</span>
+                <button class="btn btn-sm btn-outline" data-goto="tab-lab">Launch Detection Lab</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layer 2 Card -->
+          <div class="defense-layer-card layer-card-2">
+            <div class="layer-card-badge">LAYER 2 &bull; PREVENTION</div>
+            <div class="layer-card-header">
+              <div class="layer-icon-box">🛡️</div>
+              <div>
+                <h3>Prevention &amp; Incident Response</h3>
+                <span class="text-muted">Safe Simulated Containment</span>
+              </div>
+            </div>
+            <div class="layer-card-body">
+              <p class="layer-desc">
+                Orchestrates automated defense playbooks upon threat confirmation, mitigating lateral movement and logging full forensic chain of custody.
+              </p>
+              <ul class="layer-feature-list">
+                <li><span>✔</span> <strong>Simulated Process Containment</strong> (Thread suspension &amp; process termination)</li>
+                <li><span>✔</span> <strong>Simulated Endpoint Isolation</strong> (Virtual network interface segregation)</li>
+                <li><span>✔</span> <strong>VSS Snapshot Integrity Check</strong> (Audit shadow copy backup stores)</li>
+                <li><span>✔</span> <strong>SQLite Incident Persistence</strong> (Forensic export via CSV and JSON)</li>
+              </ul>
+              <div class="layer-status-footer">
+                <span class="status-pill status-ready">READY &bull; SIMULATED PLAYBOOK</span>
+                <button class="btn btn-sm btn-outline" data-goto="tab-alerts">View Incident History</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Layer 3 Card -->
+          <div class="defense-layer-card layer-card-3">
+            <div class="layer-card-badge">LAYER 3 &bull; CLASSIFICATION</div>
+            <div class="layer-card-header">
+              <div class="layer-icon-box">🧠</div>
+              <div>
+                <h3>ML Executable Classification</h3>
+                <span class="text-muted">Static PE Header Model</span>
+              </div>
+            </div>
+            <div class="layer-card-body">
+              <p class="layer-desc">
+                Evaluates binary structure (sections, debug headers, stack reserves, and cryptocurrency address markers) using a trained supervised Random Forest classifier.
+              </p>
+              <ul class="layer-feature-list">
+                <li><span>✔</span> <strong>Random Forest Classifier</strong> (Evaluated against DT, SVM &amp; Gradient Boosting)</li>
+                <li><span>✔</span> <strong>15 PE Header Structural Features</strong> (Excludes filenames and hashes)</li>
+                <li><span>✔</span> <strong>Cryptocurrency Wallet Pattern Extractor</strong> (Detects embedded ransom addresses)</li>
+                <li><span>✔</span> <strong>Calibrated Confidence Scoring</strong> (Provides clear Benign / Malicious verdict)</li>
+              </ul>
+              <div class="layer-status-footer">
+                <span class="status-pill status-online">ONLINE &bull; MODEL v1.0.0</span>
+                <button class="btn btn-sm btn-outline" data-goto="tab-ml-classifier">Run PE Classifier</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="panel-box">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Event ID</th>
-                  <th>Process Name (PID)</th>
-                  <th>User</th>
-                  <th>Target Scope</th>
-                  <th>Risk Level</th>
-                  <th>Risk Score</th>
-                  <th>ML Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="live-events-tbody">
-                <tr><td colspan="9" class="text-center text-muted">No telemetry events recorded yet.</td></tr>
-              </tbody>
-            </table>
+        <!-- Layer Coordination Flow -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>How the Three Layers Coordinate Against Ransomware</h3>
+            <span class="badge-pill">Defense-in-Depth Pipeline</span>
+          </div>
+          <div class="flow-pipeline-steps">
+            <div class="pipeline-step">
+              <div class="step-circle">1</div>
+              <h4>Ingress &amp; Pre-Execution (L3)</h4>
+              <p>Static PE Header Model inspects unfamiliar binary structures for packed code and Bitcoin wallet signatures.</p>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-circle">2</div>
+              <h4>Runtime Execution (L1)</h4>
+              <p>Behavioral engine monitors file write velocity, rename spikes, and Shannon entropy shifts during file access.</p>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+              <div class="step-circle">3</div>
+              <h4>Dynamic Triage &amp; Containment (L2)</h4>
+              <p>Automated playbook flags the threat, simulates process suspension, and isolates endpoint from lateral propagation.</p>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ============================================== -->
-      <!-- SECTION D: ALERTS & INCIDENTS -->
+      <!-- SECTION 4: ML MALWARE CLASSIFICATION (LAYER 3) -->
+      <!-- ============================================== -->
+      <section id="tab-ml-classifier" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Layer 3: Machine Learning Malware Classification</h2>
+            <p class="subtitle">Supervised PE header analysis module trained on executable dataset features. Classifies binary payloads as Benign or Malicious.</p>
+          </div>
+          <div class="model-pill">
+            <span class="badge-icon">🌲</span> Random Forest Classifier (100 Trees)
+          </div>
+        </div>
+
+        <!-- PE Header Classifier Interactive Tester -->
+        <div class="lab-layout">
+          <!-- Left: Sample Loader & Feature Vector -->
+          <div class="card">
+            <div class="card-header">
+              <h3>PE Header Feature Extraction</h3>
+              <span class="text-muted text-sm">Target: Benign = 1, Malicious = 0</span>
+            </div>
+            <div class="card-body">
+              <!-- Preset PE Samples -->
+              <div class="pe-samples-bar mb-3">
+                <span class="scenarios-title">Load Sample Binary:</span>
+                <button class="btn btn-sm btn-outline" id="pe-sample-svchost">
+                  🟢 svchost.exe (Benign System)
+                </button>
+                <button class="btn btn-sm btn-outline" id="pe-sample-chrome">
+                  🟢 chrome.exe (Benign App)
+                </button>
+                <button class="btn btn-sm btn-danger" id="pe-sample-wannacry">
+                  🔴 tasksche_dropper.exe (WannaCry)
+                </button>
+                <button class="btn btn-sm btn-danger" id="pe-sample-lockbit">
+                  🔴 lockbit_loader.exe (LockBit)
+                </button>
+              </div>
+
+              <form id="pe-feature-form">
+                <div class="form-group mb-3">
+                  <label>Binary File Name</label>
+                  <input type="text" id="pe-filename" class="form-input" value="svchost.exe" required>
+                  <small class="text-muted">Excluded from model training to prevent identifier overfitting.</small>
+                </div>
+
+                <div class="pe-features-grid">
+                  <div class="form-group">
+                    <label>Machine Architecture</label>
+                    <select id="pe-Machine" class="form-select">
+                      <option value="34404">34404 (x64 / AMD64)</option>
+                      <option value="332">332 (x86 / Intel i386)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Debug Size (bytes)</label>
+                    <input type="number" id="pe-DebugSize" class="form-input" value="56">
+                  </div>
+                  <div class="form-group">
+                    <label>Debug RVA</label>
+                    <input type="number" id="pe-DebugRVA" class="form-input" value="16384">
+                  </div>
+                  <div class="form-group">
+                    <label>Major Image Version</label>
+                    <input type="number" id="pe-MajorImageVersion" class="form-input" value="10">
+                  </div>
+                  <div class="form-group">
+                    <label>Major OS Version</label>
+                    <input type="number" id="pe-MajorOSVersion" class="form-input" value="10">
+                  </div>
+                  <div class="form-group">
+                    <label>Export RVA</label>
+                    <input type="number" id="pe-ExportRVA" class="form-input" value="0">
+                  </div>
+                  <div class="form-group">
+                    <label>Export Size</label>
+                    <input type="number" id="pe-ExportSize" class="form-input" value="0">
+                  </div>
+                  <div class="form-group">
+                    <label>Import Address Table (IatVRA)</label>
+                    <input type="number" id="pe-IatVRA" class="form-input" value="8192">
+                  </div>
+                  <div class="form-group">
+                    <label>Major Linker Version</label>
+                    <input type="number" id="pe-MajorLinkerVersion" class="form-input" value="14">
+                  </div>
+                  <div class="form-group">
+                    <label>Minor Linker Version</label>
+                    <input type="number" id="pe-MinorLinkerVersion" class="form-input" value="28">
+                  </div>
+                  <div class="form-group">
+                    <label>Number of Sections</label>
+                    <input type="number" id="pe-NumberOfSections" class="form-input" value="6">
+                  </div>
+                  <div class="form-group">
+                    <label>Size of Stack Reserve</label>
+                    <input type="number" id="pe-SizeOfStackReserve" class="form-input" value="1048576">
+                  </div>
+                  <div class="form-group">
+                    <label>DLL Characteristics</label>
+                    <input type="number" id="pe-DllCharacteristics" class="form-input" value="33120">
+                  </div>
+                  <div class="form-group">
+                    <label>Resource Size (bytes)</label>
+                    <input type="number" id="pe-ResourceSize" class="form-input" value="12450">
+                  </div>
+                  <div class="form-group">
+                    <label>Bitcoin Wallet Addresses</label>
+                    <input type="number" id="pe-BitcoinAddresses" class="form-input" value="0">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3" id="pe-classify-btn">
+                  Classify Executable Binary (Layer 3)
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Right: Classification Outcome & Explainability -->
+          <div class="card">
+            <div class="card-header">
+              <h3>ML Prediction &amp; Structural Forensics</h3>
+              <span class="badge-status" id="pe-verdict-badge">READY TO CLASSIFY</span>
+            </div>
+            <div class="card-body">
+              <div class="pe-verdict-banner" id="pe-verdict-banner">
+                <div class="verdict-icon" id="pe-verdict-icon">🛡️</div>
+                <div>
+                  <h3 id="pe-verdict-title">BENIGN EXECUTABLE</h3>
+                  <p id="pe-verdict-sub">Confidence: 99.8% &bull; Model: Random Forest</p>
+                </div>
+              </div>
+
+              <!-- Malicious Probability Score Meter -->
+              <div class="probability-meter-box mt-3">
+                <div class="meter-label-row">
+                  <span>Malware Probability Score:</span>
+                  <strong id="pe-score-text">1.2%</strong>
+                </div>
+                <div class="meter-bar-track">
+                  <div class="meter-bar-fill" id="pe-score-bar" style="width: 1.2%;"></div>
+                </div>
+              </div>
+
+              <!-- Structural Forensics -->
+              <div class="explanation-box mt-3">
+                <div class="explanation-title">
+                  <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  Executable Forensic Assessment
+                </div>
+                <p class="explanation-text" id="pe-dynamic-explanation">
+                  Header displays standard section layout, valid debug directory, normal compiler linker signatures, and zero cryptocurrency address strings.
+                </p>
+              </div>
+
+              <div class="contributors-box mt-3">
+                <div class="contributors-title">Detected Structural Flags / Anomalies</div>
+                <div class="contributors-list" id="pe-anomalies-list">
+                  <div class="empty-state text-success">✔ Clean binary profile. No structural PE anomalies detected.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Comparison Grid -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>Supervised Model Comparison &amp; Benchmark Metrics</h3>
+            <span class="badge-pill">Stratified 80/20 Held-Out Evaluation</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="pe-model-comp-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Accuracy</th>
+                  <th>Precision</th>
+                  <th>Recall</th>
+                  <th>F1-Score</th>
+                  <th>Confusion Matrix (TP / FP / TN / FN)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="pe-model-comp-tbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+          <div class="panel-footer-note">
+            <small class="text-muted">
+              Note: This dataset represents benign versus malicious Windows executables. It is not exclusively ransomware-specific and is evaluated independently from Layer 1 runtime behavioral monitoring.
+            </small>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION 5: SIMULATION CENTRE (FLAGSHIP NEW FEATURE) -->
+      <!-- ============================================== -->
+      <section id="tab-simulation" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2>Simulation Centre: Live Ransomware Attack Workflow</h2>
+            <p class="subtitle">Guided, interactive 6-stage simulated attack demonstrating Layer 1, Layer 2, and Layer 3 defense activation.</p>
+          </div>
+          <div class="sim-controls-toolbar">
+            <button class="btn btn-primary" id="sim-start-btn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Start Live Simulation
+            </button>
+            <button class="btn btn-warning" id="sim-pause-btn" disabled>
+              ❚❚ Pause
+            </button>
+            <button class="btn btn-outline" id="sim-step-btn">
+              ⏭ Next Stage
+            </button>
+            <button class="btn btn-ghost" id="sim-reset-btn">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Simulation Progress Stepper (Stages 1 - 6) -->
+        <div class="sim-stepper-card">
+          <div class="stepper-track">
+            <div class="stepper-progress" id="sim-stepper-progress" style="width: 0%;"></div>
+          </div>
+          <div class="stepper-steps-row">
+            <div class="step-node active" id="step-node-1" data-step="1">
+              <span class="step-num">1</span>
+              <span class="step-title">Normal Baseline</span>
+            </div>
+            <div class="step-node" id="step-node-2" data-step="2">
+              <span class="step-num">2</span>
+              <span class="step-title">Suspicious Ingress</span>
+            </div>
+            <div class="step-node" id="step-node-3" data-step="3">
+              <span class="step-num">3</span>
+              <span class="step-title">Layer 1 Detection</span>
+            </div>
+            <div class="step-node" id="step-node-4" data-step="4">
+              <span class="step-num">4</span>
+              <span class="step-title">Layer 2 Response</span>
+            </div>
+            <div class="step-node" id="step-node-5" data-step="5">
+              <span class="step-num">5</span>
+              <span class="step-title">Layer 3 ML Analysis</span>
+            </div>
+            <div class="step-node" id="step-node-6" data-step="6">
+              <span class="step-num">6</span>
+              <span class="step-title">Incident Report</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Defense Layers Status Indicator -->
+        <div class="sim-layer-indicator-strip">
+          <div class="layer-indicator-box" id="sim-layer-1-box">
+            <div class="indicator-header">
+              <span class="indicator-dot dot-active"></span>
+              <strong>LAYER 1: BEHAVIOURAL DETECTION</strong>
+            </div>
+            <span class="indicator-status-text" id="sim-layer-1-status">Monitoring System Calls (Baseline)</span>
+          </div>
+          <div class="layer-indicator-box" id="sim-layer-2-box">
+            <div class="indicator-header">
+              <span class="indicator-dot dot-standby"></span>
+              <strong>LAYER 2: CONTAINMENT RESPONSE</strong>
+            </div>
+            <span class="indicator-status-text" id="sim-layer-2-status">Playbook Armed (Standby)</span>
+          </div>
+          <div class="layer-indicator-box" id="sim-layer-3-box">
+            <div class="indicator-header">
+              <span class="indicator-dot dot-standby"></span>
+              <strong>LAYER 3: ML EXECUTABLE CLASSIFIER</strong>
+            </div>
+            <span class="indicator-status-text" id="sim-layer-3-status">PE Classifier Ready</span>
+          </div>
+        </div>
+
+        <!-- Simulation Split View: Live Telemetry Console & Real-Time Defense HUD -->
+        <div class="sim-split-layout">
+          <!-- Left: Live Telemetry Event Stream -->
+          <div class="card sim-terminal-card">
+            <div class="card-header terminal-header">
+              <div class="terminal-dots">
+                <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+              </div>
+              <span class="terminal-title">LIVE TELEMETRY STREAM &bull; IN-MEMORY SIMULATION</span>
+              <span class="terminal-live-badge" id="terminal-live-badge">STANDBY</span>
+            </div>
+            <div class="card-body terminal-body" id="sim-telemetry-terminal">
+              <div class="terminal-line text-muted">[00:00:00] Standing by. Click "Start Live Simulation" to launch the guided ransomware scenario...</div>
+            </div>
+          </div>
+
+          <!-- Right: Real-Time Attack Analysis HUD -->
+          <div class="card sim-hud-card">
+            <div class="card-header">
+              <h3>Live Attack Threat Assessment</h3>
+              <span class="badge-status level-low" id="sim-status-badge">STAGE 1 &bull; NORMAL</span>
+            </div>
+            <div class="card-body">
+              <div class="risk-hero">
+                <div class="risk-gauge-wrap">
+                  <div class="risk-score-circle" id="sim-risk-circle" style="border-color: var(--success);">
+                    <span class="risk-score-number" id="sim-risk-score">12</span>
+                    <span class="risk-score-scale">/100</span>
+                  </div>
+                </div>
+                <div class="risk-meta">
+                  <div class="risk-level-badge level-low" id="sim-risk-level">LOW RISK</div>
+                  <div class="stage-info-text">
+                    <strong id="sim-stage-title">Normal System Activity</strong>
+                    <p id="sim-stage-desc" class="text-muted mt-1">Routine endpoint file access with normal low-frequency writes.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Active Indicators -->
+              <div class="sim-indicators-hud mt-3">
+                <div class="hud-stat">
+                  <span class="hud-stat-label">File Mod Rate:</span>
+                  <strong id="hud-mod-rate">0.8 files/s</strong>
+                </div>
+                <div class="hud-stat">
+                  <span class="hud-stat-label">Rename Velocity:</span>
+                  <strong id="hud-rename-rate">0.0 /min</strong>
+                </div>
+                <div class="hud-stat">
+                  <span class="hud-stat-label">Shannon Entropy:</span>
+                  <strong id="hud-entropy-val">3.45 bits/byte</strong>
+                </div>
+                <div class="hud-stat">
+                  <span class="hud-stat-label">Backup Tampering:</span>
+                  <strong id="hud-vss-status">None</strong>
+                </div>
+              </div>
+
+              <!-- Active Alerts Banner -->
+              <div class="sim-alert-banner mt-3 hidden" id="sim-active-alert-box">
+                <div class="sim-alert-title">
+                  <span class="badge-icon">⚠️</span> DEFENSE PLAYBOOK TRIGGERED: SIMULATED CONTAINMENT ACTIVE
+                </div>
+                <p id="sim-alert-text">Process thread suspended. Virtual endpoint isolated from subnet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 6: Final Incident Forensic Report Card (Hidden until complete) -->
+        <div class="panel-box mt-4 hidden" id="sim-final-report-card">
+          <div class="panel-box-header">
+            <h3>Final Incident Forensic Report (Simulated Ransomware Attack)</h3>
+            <span class="badge-status level-critical">SIMULATION COMPLETED</span>
+          </div>
+          <div class="report-body p-4" id="sim-final-report-content">
+            <!-- Dynamically populated at Stage 6 -->
+          </div>
+          <div class="report-actions-footer p-3">
+            <button class="btn btn-primary" id="sim-run-again-btn">Run Simulation Again</button>
+            <button class="btn btn-outline" id="sim-export-report-btn">Export Report (JSON)</button>
+            <button class="btn btn-ghost" id="sim-view-audit-btn" data-goto="tab-alerts">View Incident History</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SECTION 6: ALERTS & INCIDENTS -->
       <!-- ============================================== -->
       <section id="tab-alerts" class="tab-pane">
         <div class="section-header">
@@ -653,7 +1176,7 @@
       </section>
 
       <!-- ============================================== -->
-      <!-- SECTION E: DETECTION RULES -->
+      <!-- SECTION 7: DETECTION RULES -->
       <!-- ============================================== -->
       <section id="tab-rules" class="tab-pane">
         <div class="section-header">
@@ -714,271 +1237,98 @@
       </section>
 
       <!-- ============================================== -->
-      <!-- SECTION F: MODEL INSIGHTS -->
+      <!-- SECTION 8: FACULTY GUIDE & SETTINGS -->
       <!-- ============================================== -->
-      <section id="tab-model" class="tab-pane">
+      <section id="tab-guide" class="tab-pane">
         <div class="section-header">
           <div>
-            <h2>Machine Learning Anomaly Detection Insights</h2>
-            <p class="subtitle">Architecture, reproducible training pipeline, and validation metrics for the Isolation Forest detector.</p>
+            <h2>Faculty Guide &amp; Technical Reference</h2>
+            <p class="subtitle">Plain-English explanations, academic concepts, and demonstration guide for evaluators.</p>
           </div>
         </div>
 
-        <!-- Academic Disclosure Banner -->
-        <div class="scientific-notice-card">
-          <div class="notice-icon">⚠️</div>
+        <!-- Simple Explanation Cards (Easy for Non-Technical Evaluators) -->
+        <div class="glossary-grid">
+          <div class="glossary-card">
+            <div class="glossary-icon">🔒</div>
+            <h4>What is Ransomware?</h4>
+            <p>Malicious software that secretly encrypts your files (like documents, photos, and databases) and demands payment in cryptocurrency to unlock them.</p>
+          </div>
+          <div class="glossary-card">
+            <div class="glossary-icon">👁️</div>
+            <h4>What is Behaviour Monitoring?</h4>
+            <p>Watching what running programs are actually doing (e.g. how many files they rename or overwrite per second) rather than just looking at file names or signatures.</p>
+          </div>
+          <div class="glossary-card">
+            <div class="glossary-icon">📈</div>
+            <h4>What is Anomaly Detection?</h4>
+            <p>Using machine learning to learn what "normal computer work" looks like, and immediately alerting when a program behaves abnormally.</p>
+          </div>
+          <div class="glossary-card">
+            <div class="glossary-icon">🎲</div>
+            <h4>What is Shannon Entropy?</h4>
+            <p>A mathematical measure of how random data is. Plain text has low entropy (~3.5). Encrypted files look completely random with very high entropy (~7.9).</p>
+          </div>
+          <div class="glossary-card">
+            <div class="glossary-icon">🤖</div>
+            <h4>What is Machine Learning here?</h4>
+            <p>We use Isolation Forest for runtime anomaly detection and Random Forest to check executable files for dangerous structures before they run.</p>
+          </div>
+          <div class="glossary-card">
+            <div class="glossary-icon">🎯</div>
+            <h4>What is a Risk Score?</h4>
+            <p>A combined score from 0 to 100 showing how dangerous a process appears, based on rules and machine learning working together.</p>
+          </div>
+        </div>
+
+        <!-- Walkthrough for Faculty Presentation -->
+        <div class="panel-box mt-4">
+          <div class="panel-box-header">
+            <h3>How to Demonstrate RansomWatch to Faculty / Hackathon Judges</h3>
+            <span class="badge-pill">3-Minute Demo Walkthrough</span>
+          </div>
+          <div class="walkthrough-steps p-4">
+            <div class="step-card">
+              <span class="badge-status level-low">Step 1</span>
+              <h4>Start with the Overview</h4>
+              <p>Show the dashboard at <code>/</code>, point out the academic affiliation (Manav Rachna University), and show the 3 Defense Layers active.</p>
+            </div>
+            <div class="step-card">
+              <span class="badge-status level-medium">Step 2</span>
+              <h4>Click "RUN LIVE SIMULATION"</h4>
+              <p>Show the 6-stage guided attack. Explain how the system transitions from normal office work (Stage 1) to suspicious ingress (Stage 2), triggers Layer 1 behavioural detection (Stage 3), engages Layer 2 simulated containment (Stage 4), and uses Layer 3 ML to classify the malware executable (Stage 5).</p>
+            </div>
+            <div class="step-card">
+              <span class="badge-status level-high">Step 3</span>
+              <h4>Demonstrate Layer 3 PE Classification</h4>
+              <p>Go to <strong>ML Detection</strong>, load <code>svchost.exe</code> (Benign), then load <code>tasksche_dropper.exe</code> (WannaCry - Malicious). Point out how Bitcoin addresses and missing debug info are flagged.</p>
+            </div>
+            <div class="step-card">
+              <span class="badge-status level-critical">Step 4</span>
+              <h4>Show Explainability &amp; Safety</h4>
+              <p>Show that every alert explains <em>why</em> it triggered in plain English and that all containment actions are safe in-memory simulations.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic & Ethical Disclosure -->
+        <div class="scientific-notice-card mt-4">
+          <div class="notice-icon">🛡️</div>
           <div>
-            <h4>Academic Disclosure &amp; Scope Limitation</h4>
+            <h4>Academic Scope &amp; Safety Disclosure</h4>
             <p>
-              The Isolation Forest model is an <strong>unsupervised anomaly detector</strong> trained on synthetic behavioral feature vectors
-              modeling both benign baseline tasks and ransomware burst signatures. It identifies multi-dimensional spatial outliers
-              rather than deterministic malware signatures. High performance on synthetic test benchmarks demonstrates algorithmic functionality,
-              not universal immunity against novel evasion techniques or unmodeled legitimate enterprise workflows.
+              RansomWatch is developed strictly for educational and defensive cybersecurity research in the subject
+              <strong>Network Security and Cryptography</strong> at <strong>Manav Rachna University</strong>.
+              It does not contain destructive payloads, does not modify real host files, and does not execute real malware.
+              All response actions (process termination, network isolation) are simulated safely.
             </p>
-          </div>
-        </div>
-
-        <!-- Model Metadata Grid -->
-        <div class="metrics-grid mt-4">
-          <div class="metric-card">
-            <div class="metric-label">Algorithm</div>
-            <div class="metric-value text-cyan" style="font-size: 1.25rem;">Isolation Forest</div>
-            <div class="metric-sub">scikit-learn ensemble</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Ensemble Trees</div>
-            <div class="metric-value" id="model-trees">150</div>
-            <div class="metric-sub">n_estimators parameter</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Reproducibility Seed</div>
-            <div class="metric-value text-warning">42</div>
-            <div class="metric-sub">Fixed pseudo-random seed</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Training Samples</div>
-            <div class="metric-value" id="model-samples">2,950</div>
-            <div class="metric-sub">2,500 benign / 450 anomalous</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Contamination Ratio</div>
-            <div class="metric-value" id="model-contamination">0.153</div>
-            <div class="metric-sub">Expected outlier proportion</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Features Evaluated</div>
-            <div class="metric-value">15</div>
-            <div class="metric-sub">Continuous &amp; count vectors</div>
-          </div>
-        </div>
-
-        <!-- Evaluation Benchmark Results Card -->
-        <div class="panel-box mt-4">
-          <div class="panel-box-header">
-            <h3>Independent Held-Out Evaluation Benchmark</h3>
-            <span class="badge-pill">Seed: 999 (1,250 Test Samples)</span>
-          </div>
-          <div class="eval-metrics-grid" id="eval-metrics-container">
-            <div class="eval-box">
-              <span class="eval-lbl">Precision:</span>
-              <strong class="eval-val text-success" id="eval-precision">1.0000</strong>
-            </div>
-            <div class="eval-box">
-              <span class="eval-lbl">Recall:</span>
-              <strong class="eval-val text-success" id="eval-recall">1.0000</strong>
-            </div>
-            <div class="eval-box">
-              <span class="eval-lbl">F1-Score:</span>
-              <strong class="eval-val text-success" id="eval-f1">1.0000</strong>
-            </div>
-            <div class="eval-box">
-              <span class="eval-lbl">False Positive Rate (FPR):</span>
-              <strong class="eval-val text-cyan" id="eval-fpr">0.0000</strong>
-            </div>
-          </div>
-        </div>
-
-        <!-- Feature List and Descriptions -->
-        <div class="panel-box mt-4">
-          <div class="panel-box-header">
-            <h3>Evaluated Feature Space (15 Behavioral Parameters)</h3>
-          </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Feature Key</th>
-                  <th>Display Name</th>
-                  <th>Benign Baseline</th>
-                  <th>Suspicious Range</th>
-                  <th>Defensive Significance</th>
-                </tr>
-              </thead>
-              <tbody id="model-features-tbody">
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================== -->
-      <!-- SECTION G: RESPONSE CENTRE -->
-      <!-- ============================================== -->
-      <section id="tab-response" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Defensive Incident Response Centre</h2>
-            <p class="subtitle">Safe simulation workflows, containment playbooks, and backup integrity verification procedures.</p>
-          </div>
-        </div>
-
-        <!-- Visible Safety Notice -->
-        <div class="simulated-containment-banner">
-          <span class="sim-pill">SIMULATED ENVIRONMENT</span>
-          <span>NO REAL ENDPOINT ISOLATED &bull; NO PHYSICAL PROCESS TERMINATED &bull; NO REAL FILES RESTORED</span>
-        </div>
-
-        <div class="response-grid">
-          <!-- Active Incident Selector Card -->
-          <div class="card">
-            <div class="card-header">
-              <h3>Incident Triage &amp; Containment Trigger</h3>
-            </div>
-            <div class="card-body">
-              <div class="form-group">
-                <label>Select Incident to Contain:</label>
-                <select id="response-incident-select" class="form-select">
-                  <option value="">-- Choose an Incident --</option>
-                </select>
-              </div>
-
-              <div id="response-incident-details" class="incident-preview-box hidden">
-                <div class="preview-row">
-                  <span class="text-muted">Target Process:</span>
-                  <strong id="resp-proc-name">-</strong>
-                </div>
-                <div class="preview-row">
-                  <span class="text-muted">Risk Assessment:</span>
-                  <span id="resp-risk-badge" class="badge-status">-</span>
-                </div>
-                <div class="preview-row">
-                  <span class="text-muted">Path:</span>
-                  <code id="resp-path">-</code>
-                </div>
-                <div class="preview-row">
-                  <span class="text-muted">Dynamic Recommendation:</span>
-                  <p id="resp-recommendation" class="text-muted mt-1">-</p>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label>Analyst Notes:</label>
-                <textarea id="resp-notes" class="form-textarea" rows="2" placeholder="Record incident containment notes..."></textarea>
-              </div>
-
-              <div class="action-buttons-stack mt-3">
-                <button class="btn btn-warning btn-block" id="resp-btn-ack">
-                  Acknowledge Incident
-                </button>
-                <button class="btn btn-danger btn-block" id="resp-btn-terminate">
-                  Simulate Process Termination
-                </button>
-                <button class="btn btn-danger btn-block" id="resp-btn-isolate">
-                  Simulate Endpoint Isolation
-                </button>
-                <button class="btn btn-cyan btn-block" id="resp-btn-restore">
-                  Simulate Volume Shadow Copy Rollback Check
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Playbook & Recovery Checklist -->
-          <div class="card">
-            <div class="card-header">
-              <h3>Ransomware Incident Response Playbook</h3>
-              <span class="badge-pill">NIST SP 800-61 Rev 2</span>
-            </div>
-            <div class="card-body">
-              <div class="checklist-group">
-                <h4>1. Triage &amp; Identification</h4>
-                <label class="checkbox-item">
-                  <input type="checkbox" checked disabled>
-                  <span>Multi-parameter behavioral analysis executed</span>
-                </label>
-                <label class="checkbox-item">
-                  <input type="checkbox" checked disabled>
-                  <span>Isolation Forest anomaly score verified</span>
-                </label>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Preserve memory triage dump (.dmp) for decryptor key extraction</span>
-                </label>
-              </div>
-
-              <div class="checklist-group mt-3">
-                <h4>2. Safe Containment &amp; Eradication</h4>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Simulate network isolation on affected VLAN / segment</span>
-                </label>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Audit Active Directory accounts associated with execution</span>
-                </label>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Verify Volume Shadow Copies (VSS) status via safe diagnostic</span>
-                </label>
-              </div>
-
-              <div class="checklist-group mt-3">
-                <h4>3. Post-Incident Recovery</h4>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Validate immutable offline backup integrity hash</span>
-                </label>
-                <label class="checkbox-item">
-                  <input type="checkbox">
-                  <span>Verify absence of persistence mechanisms (Scheduled Tasks, Registry Run Keys)</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Simulated Response Audit Log -->
-        <div class="panel-box mt-4">
-          <div class="panel-box-header">
-            <h3>Simulated Incident Action Audit Trail</h3>
-            <span class="badge-pill">Chain of Custody</span>
-          </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Action ID</th>
-                  <th>Incident Ref</th>
-                  <th>Action Taken</th>
-                  <th>Analyst</th>
-                  <th>Notes</th>
-                  <th>Simulation Banner</th>
-                </tr>
-              </thead>
-              <tbody id="response-audit-tbody">
-                <tr><td colspan="7" class="text-center text-muted">No simulated response actions recorded yet.</td></tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Incident Detail Forensic Modal -->
+  <!-- Forensic Incident Detail Modal -->
   <div id="incident-modal" class="modal hidden">
     <div class="modal-backdrop"></div>
     <div class="modal-content">
